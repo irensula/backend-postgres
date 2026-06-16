@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 // get user's data
 router.get("/:id", async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = res.locals.auth.userId;
     const user = await knex("users")
       .where({ "users.user_id": userId })
       .leftJoin("avatars", "users.avatar_id", "avatars.avatar_id")
@@ -32,7 +32,7 @@ router.get("/:id", async (req, res) => {
 // edit user's data
 router.put("/:id", async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = res.locals.auth.userId;
     const { username, email, password, avatar_id } = req.body;
     
     if (userId !== res.locals.auth.userId.toString()) {
@@ -91,7 +91,7 @@ router.put("/:id", async (req, res) => {
 // edit user's ui language
 router.put("/:id/settings", async(req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = res.locals.auth.userId;
     const { ui_language_id } = req.body;
 
     if (userId !== res.locals.auth.userId.toString()) {

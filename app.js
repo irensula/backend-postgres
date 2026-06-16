@@ -34,6 +34,7 @@ app.use(
   require("./routes/registerRouter")
 );
 app.use("/users", isAuthenticated, require("./routes/usersRouter"));
+app.use("/courses", isAuthenticated, require("./routes/coursesRouter"));
 app.use("/", require("./routes/index"));
 
 module.exports = app;
