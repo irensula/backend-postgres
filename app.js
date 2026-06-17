@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Схемы и middleware
+// schemas and middleware
 let userschema = require("./schemas/userschema.json");
 let validateSchema = require("./middleware/validate");
 let isAuthenticated = require("./middleware/auth");
@@ -34,7 +34,9 @@ app.use(
   require("./routes/registerRouter")
 );
 app.use("/users", isAuthenticated, require("./routes/usersRouter"));
+app.use("/languages", isAuthenticated, require("./routes/languagesRouter"));
 app.use("/courses", isAuthenticated, require("./routes/coursesRouter"));
+app.use("/content", isAuthenticated, require("./routes/contentRouter"));
 app.use("/", require("./routes/index"));
 
 module.exports = app;

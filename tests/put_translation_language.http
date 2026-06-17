@@ -1,0 +1,7 @@
+PUT http://localhost:3001/courses/3 HTTP/1.1
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJQZW5ueSIsImVtYWlsIjoicGVubnlAZ21haWwuY29tIiwiYXZhdGFyX2lkIjozLCJhdmF0YXJfcGF0aCI6Ii9pbWFnZXMvYXZhdGFycy9yb2JvdC5wbmciLCJpYXQiOjE3ODE2Mzc1ODksImV4cCI6MTc4MjI0MjM4OX0.C3dRefEfv0FKyeEQHtmV0is9QFTy0J62xdngpRKaO6I
+
+{
+    "translation_language_id": 4
+}

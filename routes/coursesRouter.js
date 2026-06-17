@@ -3,7 +3,7 @@ let router = express.Router();
 const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 const bcrypt = require("bcryptjs");
-
+// get user's courses
 router.get('/', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
@@ -16,7 +16,7 @@ router.get('/', async(req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
+// create course
 router.post('/', async (req, res) => {
   try {
     const userId = res.locals.auth.userId;
@@ -37,8 +37,7 @@ router.post('/', async (req, res) => {
     const existing = await knex('users_languages')
       .where({ 
         user_id: userId, 
-        language_id, 
-        translation_language_id
+        language_id
       })
       .first();
 
@@ -50,13 +49,82 @@ router.post('/', async (req, res) => {
       .insert({
         user_id: userId,
         language_id,
-        translation_language_id
+        translation_language_id,
+        last_category_id: 1
       })
 
     return res.status(201).json({ message: "Course created successfully" });
   } catch (error) {
     console.error("Create course error:", error);
     res.status(500).json({ error: "Failed to create course" });
+  }
+});
+// edit translation language
+router.put("/:id", async(req, res) => {
+  try {
+    const courseId = req.params.id;
+    const userId = res.locals.auth.userId;
+    const { translation_language_id } = req.body;
+    // validate request
+    if (!translation_language_id) {
+      return res.status(400).json({ error: "translation_language_id required" });
+    }
+    // find user's course
+    const course = await knex("users_languages")
+      .where({ user_id: userId, user_language_id: courseId })
+      .first();
+    // check if course exists
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+    // check that language and translation language are different
+    if (course.language_id === translation_language_id) {
+      return res.status(400).json({ error: "Study language and translation language must be different" });
+    }
+    // update translation language
+    await knex("users_languages")
+      .where({
+        user_id: userId,
+        user_language_id: courseId
+      })
+      .update({ translation_language_id });
+    // return updated course
+    const updated = await knex("users_languages")
+      .where({
+        user_id: userId,
+        user_language_id: courseId
+      })
+      .first();
+    
+    res.json(updated);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Translation language update failed" });
+  }
+})
+// delete course
+router.delete('/:id', async (req, res) => {
+  try {
+    const courseId = req.params.id;
+    const userId = res.locals.auth.userId;
+
+    const deleteRows = await knex("users_languages")
+      .where({
+        user_language_id: courseId,
+        user_id: userId
+      })
+      .del();
+
+      if (deleteRows === 0) {
+        return res.status(404).json({
+          error: "Course not found"
+        });
+      }
+
+      res.json({ message: "Course deleted successfully" });
+  } catch (error) {
+    console.error("Delete course error:", error);
+    res.status(500).json({ error: "Failed to delete course" });
   }
 });
 
