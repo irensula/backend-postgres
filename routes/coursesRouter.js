@@ -16,6 +16,45 @@ router.get('/', async(req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// users_languages: user_id, language_id, translation_language_id
+    // content: content_id, type, image_path, category_id
+    // content_translations: content_translation_id, content_id, language_id, value, sound_path, title
+router.get('/:courseId/categories/:categoryId/content', async(req, res) => {
+  try {
+    const userId = res.locals.auth.userId;
+    const { courseId, categoryId } = req.params;
+    const type = req.query.type || "word";
+    // get course
+    const course = await knex("users_languages")
+      .where("user_language_id", courseId)
+      .first();
+
+    const { language_id, translation_language_id } = course;
+    
+    const content = await knex("content")
+      .join("content_translations as study", "study.content_id", "content.content_id")
+      .join("content_translations as translation", "translation.content_id", "content.content_id")
+      .where("content.type", type)
+      .where("content.category_id", categoryId)
+      .where("study.language_id", language_id)
+      .where("translation.language_id", translation_language_id)      
+      .select(
+        "content.content_id",
+        "content.type",
+        "content.image_path",
+        "content.category_id",
+        "study.value as study_value",
+        "translation.value as translation_value",
+        "study.sound_path",
+        "study.title"
+      );
+      
+    res.json(content);
+  } catch (error) {
+    console.error("Error fetching user's content:", error);
+    res.status(500).json({ error: "Failed to load content" });
+  }
+});
 // create course
 router.post('/', async (req, res) => {
   try {

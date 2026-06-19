@@ -36,6 +36,7 @@ app.use(
 app.use("/users", isAuthenticated, require("./routes/usersRouter"));
 app.use("/languages", isAuthenticated, require("./routes/languagesRouter"));
 app.use("/courses", isAuthenticated, require("./routes/coursesRouter"));
+app.use("/categories", isAuthenticated, require("./routes/categoriesRouter"));
 app.use("/content", isAuthenticated, require("./routes/contentRouter"));
 app.use("/", require("./routes/index"));
 
