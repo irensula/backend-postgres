@@ -7,18 +7,79 @@ const bcrypt = require("bcryptjs");
 router.get('/', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
+
+     // 1. get courses
     const courses = await knex("users_languages")
-      .where({ user_id: userId })
-      .select("*");
-    res.json(courses);
+      .join("languages as study_lang", "study_lang.language_id", "users_languages.language_id")
+      .join("languages as trans_lang", "trans_lang.language_id", "users_languages.translation_language_id")
+      .where("users_languages.user_id", userId)
+      .select(
+        "users_languages.user_language_id as course",
+        "study_lang.name as studyLanguage",
+        "trans_lang.name as translationLanguage",
+        "users_languages.last_category_id as currentCategory"
+      );
+
+    // 2. attach aggregated progress per course
+    const progress = await knex("progress")
+      .select(
+        "progress.user_language_id",
+        knex.raw("COALESCE(SUM(progress.score), 0) as total_score")
+      )
+      .groupBy("progress.user_language_id");
+
+    const progressMap = Object.fromEntries(
+      progress.map(p => [
+        Number(p.user_language_id), 
+        Number(p.total_score || 0)
+      ])
+    );
+
+    // 3. categories
+    const totalCategoriesRow = await knex("categories")
+      .count("category_id as total")
+      .first();
+
+    const totalCategories = Number(totalCategoriesRow.total);
+
+    // 4. completed categories per course
+    const completed = await knex("progress")
+      .join("exercises", "exercises.exercise_id", "progress.exercise_id")
+      .join("categories", "categories.category_id", "exercises.category_id")
+      .select("progress.user_language_id")
+      .whereIn("progress.user_language_id", courses.map(c => c.course))
+      .groupBy("progress.user_language_id")
+      .havingRaw("SUM(progress.score) > 0")
+      .countDistinct("categories.category_id as completed");
+
+    const completedMap = Object.fromEntries(
+      completed.map(c => [c.user_language_id, Number(c.completed)])
+    );
+
+    const result = courses.map(c => {
+      const totalScore = progressMap[c.course] || 0;
+      const done = completedMap[c.course] || 0;
+
+      return {
+        ...c,
+        totalScore,
+        totalCategories,
+        completedCategories: done,
+        percent:
+          totalCategories > 0
+            ? Math.round((done / totalCategories) * 100)
+            : 0
+      };
+    });
+      
+    res.json(result);
+
   } catch (error) {
     console.error("Error fetching user's courses:", error);
     res.status(500).json({ error: error.message });
   }
 });
-// users_languages: user_id, language_id, translation_language_id
-    // content: content_id, type, image_path, category_id
-    // content_translations: content_translation_id, content_id, language_id, value, sound_path, title
+// get content
 router.get('/:courseId/categories/:categoryId/content', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
@@ -165,6 +226,145 @@ router.delete('/:id', async (req, res) => {
     console.error("Delete course error:", error);
     res.status(500).json({ error: "Failed to delete course" });
   }
+});
+// get info about current course
+router.get('/:courseId/progress', async(req, res) => {
+  try {
+    const userId = res.locals.auth.userId;
+    const { courseId } = req.params;
+
+    const courseInfo = await knex("users_languages")
+      .join("languages", "languages.language_id", "users_languages.language_id")
+      .leftJoin("categories", "categories.category_id", "users_languages.last_category_id")
+      .where("users_languages.user_id", userId)
+      .where("users_languages.language_id", courseId)
+      .select(
+        "languages.language_id as courseId",
+        "languages.name as languageName",
+        "languages.name as title",
+        "categories.category_id as currentCategoryId",
+        "categories.name as currentCategory"
+      )
+      .first(); 
+    
+    const totalExercises = await knex("exercises")
+      .where("category_id", courseInfo.currentCategoryId)
+      .count("exercise_id as total")
+      .first();
+
+    const completedExercises = await knex("progress")
+      .join("users_languages", "users_languages.user_language_id", "progress.user_language_id")
+      .where("users_languages.user_id", userId)
+      .where("users_languages.language_id", courseId)
+      .count("progress.exercise_id as completed")
+      .first();
+
+    const total = Number(totalExercises.total || 0);
+    const done = Number(completedExercises.completed || 0);
+
+    const persent = 
+      total > 0 
+      ? Math.round((done / total) * 100) 
+      : 0;
+
+    res.json({
+      courseId: courseInfo.courseId,
+      languageName: courseInfo.languageName,
+      title: courseInfo.name,
+      currentCategoryId: courseInfo.currentCategoryId,
+      currentCategory: courseInfo.currentCategory,
+      progress: {
+        completed: done,
+        total,
+        persent
+      }
+    });
+
+  } catch (error) {
+    console.error("Error fetching user's progress:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+// get content for exercises
+router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req, res) => {
+    const userId = res.locals.auth.userId;
+    const { courseId, categoryId, exerciseId } = req.params;
+  
+    // get exercise
+    const exercise = await knex("exercises")
+      .where("exercise_id", exerciseId)
+      .first();
+
+    if (!exercise) {
+      return res.status(404).json({ error: "Exercise not found" });
+    }
+
+    // get course
+    const course = await knex("users_languages")
+      .where("user_language_id", courseId)
+      .first();
+
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    let content = [];
+
+    let contentType = null;
+
+    if (exercise.name === "MemoGame" || exercise.name === "MatchGame") {
+      contentType = "word";
+    }
+
+    if (exercise.name === "GapsTask") {
+      contentType = "sentence";
+    }
+
+    if (contentType) {
+      const studyLangId = course.language_id;
+      const transLangId = course.translation_language_id;
+
+      content = await knex("content")
+        .join("content_translations", "content_translations.content_id", "content.content_id")
+        .where("content.category_id", categoryId)
+        .where( "content.type", contentType)
+        .groupBy("content.content_id", "content.type")
+        .select(
+          "content.content_id",
+          "content.type",
+
+          knex.raw(
+            `MAX(
+              CASE 
+                WHEN content_translations.language_id = ? 
+                THEN content_translations.value 
+              END
+            ) as study`, 
+            [studyLangId]),
+
+          knex.raw(
+            `MAX(
+              CASE 
+                WHEN content_translations.language_id = ? 
+                THEN content_translations.value 
+              END
+            ) as translation`, 
+             [transLangId])
+        );
+    }
+      
+    res.json({
+      categoryId: Number(categoryId),
+
+      exercise: {
+        id: exercise.exercise_id,
+        name: exercise.name,
+        description: exercise.description,
+        maxScore: exercise.max_score
+      },
+
+      content
+    });
 });
 
 module.exports = router;
