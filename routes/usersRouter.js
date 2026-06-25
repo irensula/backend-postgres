@@ -32,13 +32,13 @@ router.get("/:id", async (req, res) => {
 // edit user's data
 router.put("/:id", async (req, res) => {
   try {
+    const { id } = req.params;
     const userId = res.locals.auth.userId;
     const { username, email, password, avatar_id } = req.body;
     
-    if (userId !== res.locals.auth.userId.toString()) {
-      return res
-        .status(403)
-        .json({ error: "Forbidden: You cannot update another user" });
+    // user can edit only his own data
+    if (Number(id) !== userId) {
+      return res.status(403).json({ error: "Forbidden" });
     }
 
     if ( !username || !email ) {
@@ -91,10 +91,12 @@ router.put("/:id", async (req, res) => {
 // edit user's ui language
 router.put("/:id/settings", async(req, res) => {
   try {
+    const { id } = req.params;
     const userId = res.locals.auth.userId;
     const { ui_language_id } = req.body;
 
-    if (userId !== res.locals.auth.userId.toString()) {
+    // user can edit only their own settings
+    if (Number(id) !== userId) {
       return res.status(403).json({ error: "Forbidden" });
     }
 

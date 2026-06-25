@@ -1,7 +1,7 @@
-PUT http://localhost:3001/users/3/settings HTTP/1.1
+PUT http://localhost:3001/users/1/settings HTTP/1.1
 Content-Type: application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJNYXJ5IiwiZW1haWwiOiJtYXJ5QGdtYWlsLmNvbSIsImF2YXRhcl9pZCI6MiwiYXZhdGFyX3BhdGgiOiIvaW1hZ2VzL2F2YXRhcnMvY2F0LnBuZyIsImlhdCI6MTc4MTUzMTIyNCwiZXhwIjoxNzgyMTM2MDI0fQ.9Zr9SDqmLN0rPUGWjS0tZQuPnHZYADsEVghf0ExOykc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJhdmF0YXJfaWQiOjEsImF2YXRhcl9wYXRoIjoiL2ltYWdlcy9hdmF0YXJzL2RvZy5wbmciLCJpYXQiOjE3ODIyMDQ0MjgsImV4cCI6MTc4MjgwOTIyOH0.2My_ezQK57l5s6FAo5ffReCi8n2U54yvXAXk0-lIkHI
 
 {
-    "ui_language_id": 2
+    "ui_language_id": 3
 }

@@ -3,12 +3,13 @@ let router = express.Router();
 const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 const bcrypt = require("bcryptjs");
+const { buildWordQuery, buildSentenceQuery } = require("../queries/exerciseContent");
 // get user's courses
 router.get('/', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
 
-     // 1. get courses
+    // 1. get courses
     const courses = await knex("users_languages")
       .join("languages as study_lang", "study_lang.language_id", "users_languages.language_id")
       .join("languages as trans_lang", "trans_lang.language_id", "users_languages.translation_language_id")
@@ -44,8 +45,7 @@ router.get('/', async(req, res) => {
 
     // 4. completed categories per course
     const completed = await knex("progress")
-      .join("exercises", "exercises.exercise_id", "progress.exercise_id")
-      .join("categories", "categories.category_id", "exercises.category_id")
+      .join("categories", "categories.category_id", "progress.category_id")
       .select("progress.user_language_id")
       .whereIn("progress.user_language_id", courses.map(c => c.course))
       .groupBy("progress.user_language_id")
@@ -285,11 +285,92 @@ router.get('/:courseId/progress', async(req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-// get content for exercises
+// GET CONTENT FOR EXERCISES
+// router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req, res) => {
+//     const userId = res.locals.auth.userId;
+//     const { courseId, categoryId, exerciseId } = req.params;
+  
+//     // get exercise
+//     const exercise = await knex("exercises")
+//       .where("exercise_id", exerciseId)
+//       .first();
+
+//     if (!exercise) {
+//       return res.status(404).json({ error: "Exercise not found" });
+//     }
+
+//     // get course
+//     const course = await knex("users_languages")
+//       .where("user_language_id", courseId)
+//       .first();
+
+//     if (!course) {
+//       return res.status(404).json({ error: "Course not found" });
+//     }
+
+//     let content = [];
+
+//     let contentType = null;
+
+//     if (exercise.name === "MemoGame" || exercise.name === "MatchGame") {
+//       contentType = "word";
+//     }
+
+//     if (exercise.name === "GapsTask") {
+//       contentType = "sentence";
+//     }
+
+//     if (contentType) {
+//       const studyLangId = course.language_id;
+//       const transLangId = course.translation_language_id;
+
+//       content = await knex("content")
+//         .join("content_translations", "content_translations.content_id", "content.content_id")
+//         .where("content.category_id", categoryId)
+//         .where( "content.type", contentType)
+//         .groupBy("content.content_id", "content.type")
+//         .select(
+//           "content.content_id",
+//           "content.type",
+
+//           knex.raw(
+//             `MAX(
+//               CASE 
+//                 WHEN content_translations.language_id = ? 
+//                 THEN content_translations.value 
+//               END
+//             ) as study`, 
+//             [studyLangId]),
+
+//           knex.raw(
+//             `MAX(
+//               CASE 
+//                 WHEN content_translations.language_id = ? 
+//                 THEN content_translations.value 
+//               END
+//             ) as translation`, 
+//              [transLangId])
+//         );
+//     }
+      
+//     res.json({
+//       categoryId: Number(categoryId),
+
+//       exercise: {
+//         id: exercise.exercise_id,
+//         name: exercise.name,
+//         description: exercise.description,
+//         maxScore: exercise.max_score
+//       },
+
+//       content
+//     });
+// });
+
 router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req, res) => {
     const userId = res.locals.auth.userId;
     const { courseId, categoryId, exerciseId } = req.params;
-  
+    const courseIdNum = Number(courseId);
     // get exercise
     const exercise = await knex("exercises")
       .where("exercise_id", exerciseId)
@@ -301,58 +382,29 @@ router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req,
 
     // get course
     const course = await knex("users_languages")
-      .where("user_language_id", courseId)
+      .where({ user_language_id: courseIdNum, user_id: userId })
       .first();
 
     if (!course) {
       return res.status(404).json({ error: "Course not found" });
     }
 
-    let content = [];
+    const builders = {
+      MemoGame: buildWordQuery,
+      MatchGame: buildWordQuery,
+      GapsTask: buildSentenceQuery
+    };
 
-    let contentType = null;
+    const build = builders[exercise.name];
 
-    if (exercise.name === "MemoGame" || exercise.name === "MatchGame") {
-      contentType = "word";
+    if (!build) {
+      return res.status(400).json({ error: "Unknown exercise type" });
     }
 
-    if (exercise.name === "GapsTask") {
-      contentType = "sentence";
-    }
-
-    if (contentType) {
-      const studyLangId = course.language_id;
-      const transLangId = course.translation_language_id;
-
-      content = await knex("content")
-        .join("content_translations", "content_translations.content_id", "content.content_id")
-        .where("content.category_id", categoryId)
-        .where( "content.type", contentType)
-        .groupBy("content.content_id", "content.type")
-        .select(
-          "content.content_id",
-          "content.type",
-
-          knex.raw(
-            `MAX(
-              CASE 
-                WHEN content_translations.language_id = ? 
-                THEN content_translations.value 
-              END
-            ) as study`, 
-            [studyLangId]),
-
-          knex.raw(
-            `MAX(
-              CASE 
-                WHEN content_translations.language_id = ? 
-                THEN content_translations.value 
-              END
-            ) as translation`, 
-             [transLangId])
-        );
-    }
-      
+    const content = await build({ knex, course, categoryId });
+    console.log("courseId:", courseId);
+    console.log("userId:", userId);
+    console.log("course:", course);
     res.json({
       categoryId: Number(categoryId),
 
@@ -362,9 +414,49 @@ router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req,
         description: exercise.description,
         maxScore: exercise.max_score
       },
-
       content
     });
+});
+// GET EXERCISES NAMES WITH STATUSES
+router.get('/:courseId/categories/:categoryId/exercises', async(req, res) => {
+  try {
+    const userId = res.locals.auth.userId;
+    const { courseId, categoryId } = req.params;
+    
+    // get course
+    const course = await knex("users_languages")
+      .where("user_language_id", courseId)
+      .first();
+    
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    // get exercises
+    const exercises = await knex("exercises")
+      .leftJoin("progress", function () {
+        this.on("progress.exercise_id", "exercises.exercise_id")
+          .andOn("progress.user_language_id", knex.raw("?", [courseId]))
+          .andOn("progress.category_id", knex.raw("?", [categoryId]));
+      })
+      .select(
+        "exercises.exercise_id",
+        "exercises.name",
+        "exercises.max_score",
+        knex.raw("COALESCE(progress.score, 0) as score")
+      );
+
+    const result = exercises.map(ex => ({
+      ...ex,
+      isCompleted: Number(ex.score) >= Number(ex.max_score)
+    }));
+
+    res.json(result);
+
+  } catch (error) {
+    console.error("Error fetching exercises:", error);
+    res.status(500).json({ error: "Failed to load exercises" });
+  }
 });
 
 module.exports = router;

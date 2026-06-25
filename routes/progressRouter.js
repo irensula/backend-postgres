@@ -49,20 +49,21 @@ router.get('/', async(req, res) => {
 }); 
 
 // insert progress
-router.post('/:courseId/:exerciseId', async (req, res) => {
+router.post('/course/:courseId/category/:categoryId/exercise/:exerciseId', async (req, res) => {
   try {
     const userId = res.locals.auth.userId;
-    const { courseId, exerciseId } = req.params;
-    
-    if (!courseId || !exerciseId) {
+    const { courseId, categoryId, exerciseId } = req.params;
+    // 1. validation
+    if (!courseId || !categoryId || !exerciseId) {
       return res.status(400).json({
         error: "Language and exercise are required"
       })
     }
-
+    // 2. prevent duplicates
     const existing = await knex('progress')
       .where({ 
-        user_language_id: courseId, 
+        user_language_id: courseId,
+        category_id: categoryId, 
         exercise_id: exerciseId
       })
       .first();
@@ -71,7 +72,7 @@ router.post('/:courseId/:exerciseId', async (req, res) => {
         return res.status(400).json({ error: "Progress for this exercise already exists"});
     } 
 
-    // get max score from exercise
+    // 3. get exercise score
     const exercise = await knex("exercises")
       .where({ exercise_id: exerciseId })
       .first();
@@ -81,18 +82,49 @@ router.post('/:courseId/:exerciseId', async (req, res) => {
         error: "Exercise not found"
       });
     }
-    // insert progress
-    await knex("progress")
-      .insert({
+    // 4. insert progress
+    await knex("progress").insert({
         user_language_id: courseId,
+        category_id: categoryId,
         exercise_id: exerciseId,
-        score: exercise.max_score || 0
+        score: exercise.max_score
       })
+    // 5. check category completion 
+    const totalExercises = await knex("exercises")
+      .sum("max_score as total")
+      .first();
+
+    const completedExercises = await knex("progress")
+      .where({
+        user_language_id: courseId,
+        category_id: categoryId
+      })
+      .sum("score as completed")
+      .first();
+
+    const total = Number(totalExercises.total);
+    const completed = Number(completedExercises.completed);
+    // 6. unlock next category
+    if (Number(completed) >= Number(total)) {
+      const nextCategory = await knex("categories")
+        .where("category_id", ">", categoryId)
+        .orderBy("category_id")
+        .first();
+      
+      if (nextCategory) {
+        await knex("users_languages")
+          .where("user_language_id", courseId)
+          .update({
+            last_category_id: nextCategory.category_id
+          });
+      }
+    }
 
     return res.status(201).json({ message: "Progress created successfully" });
+    
   } catch (error) {
-    console.error("Create course error:", error);
-    res.status(500).json({ error: "Failed to insert progress" });
+    console.error("Progress error FULL:", error);
+  res.status(500).json({ error: error.message });
   }
 });
 
