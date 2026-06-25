@@ -4,7 +4,7 @@ const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 const bcrypt = require("bcryptjs");
 const { buildWordQuery, buildSentenceQuery } = require("../queries/exerciseContent");
-// get user's courses
+// GET USER COURSES
 router.get('/', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
@@ -79,7 +79,7 @@ router.get('/', async(req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-// get content
+// GET CONTENT
 router.get('/:courseId/categories/:categoryId/content', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
@@ -366,7 +366,7 @@ router.get('/:courseId/progress', async(req, res) => {
 //       content
 //     });
 // });
-
+// GET EXERCISES (MEMOGAME, MATCHGAME, GAPSTASK)
 router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req, res) => {
     const userId = res.locals.auth.userId;
     const { courseId, categoryId, exerciseId } = req.params;

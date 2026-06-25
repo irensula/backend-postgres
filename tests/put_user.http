@@ -6,5 +6,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
     "username": "Mary",
     "email": "mary@gmail.com",
     "password": "12345678",
-    "avatar_id": 3
+    "avatar_id": 10
 }

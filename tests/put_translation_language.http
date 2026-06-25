@@ -3,5 +3,5 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJhdmF0YXJfaWQiOjEsImF2YXRhcl9wYXRoIjoiL2ltYWdlcy9hdmF0YXJzL2RvZy5wbmciLCJpYXQiOjE3ODIyMDQ0MjgsImV4cCI6MTc4MjgwOTIyOH0.2My_ezQK57l5s6FAo5ffReCi8n2U54yvXAXk0-lIkHI
 
 {
-    "translation_language_id": 4
+    "translation_language_id": 2
 }

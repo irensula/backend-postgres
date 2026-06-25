@@ -7,8 +7,13 @@ const buildWordQuery = ({ knex, course, categoryId }) => {
     .select(
       "c.content_id",
       "c.type",
+      "c.image_path",
       knex.raw(
         `MAX(CASE WHEN t.language_id = ? THEN t.value END) as study`,
+        [course.language_id]
+      ),
+      knex.raw(
+        `MAX(CASE WHEN t.language_id = ? THEN t.sound_path END) as study_sound`,
         [course.language_id]
       ),
       knex.raw(
@@ -20,29 +25,28 @@ const buildWordQuery = ({ knex, course, categoryId }) => {
 
 const buildSentenceQuery = ({ knex, course, categoryId }) => {
   return knex("content as sentence")
-     return knex("content as sentence")
-    // связь sentence → answer через pivot
+    // sentence - answer pivot
     .leftJoin(
       "sentence_answers as sa",
       "sa.sentence_content_id",
       "sentence.content_id"
     )
 
-    // само слово-ответ
+    // correct answer word
     .leftJoin(
       "content as answer",
       "answer.content_id",
       "sa.correct_word_content_id"
     )
 
-    // переводы предложения
+    // sentence translations
     .leftJoin(
       "content_translations as ct",
       "ct.content_id",
       "sentence.content_id"
     )
 
-    // переводы ответа
+    // answer word translations
     .leftJoin(
       "content_translations as at",
       "at.content_id",
@@ -60,14 +64,18 @@ const buildSentenceQuery = ({ knex, course, categoryId }) => {
     .select(
       "sentence.content_id",
       "sentence.type",
+      "sentence.image_path",
 
       knex.raw(
         `MAX(CASE WHEN ct.language_id = ? THEN ct.value END) as study`,
         [course.language_id]
       ),
-
       knex.raw(
         `MAX(CASE WHEN at.language_id = ? THEN at.value END) as answer`,
+        [course.language_id]
+      ),
+      knex.raw(
+        `MAX(CASE WHEN ct.language_id = ? THEN ct.sound_path END) as study_sound`,
         [course.language_id]
       )
     );

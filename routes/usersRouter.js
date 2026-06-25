@@ -110,6 +110,7 @@ router.put("/:id/settings", async(req, res) => {
 
     const updated = await knex("users")
       .where("user_id", userId)
+      .select("user_id", "email", "ui_language_id")
       .first();
 
       res.json(updated);
