@@ -79,12 +79,12 @@ router.get('/', async(req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-// GET CONTENT
-router.get('/:courseId/categories/:categoryId/content', async(req, res) => {
+// GET WORDS
+router.get('/:courseId/categories/:categoryId/words', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
     const { courseId, categoryId } = req.params;
-    const type = req.query.type || "word";
+
     // get course
     const course = await knex("users_languages")
       .where("user_language_id", courseId)
@@ -95,19 +95,107 @@ router.get('/:courseId/categories/:categoryId/content', async(req, res) => {
     const content = await knex("content")
       .join("content_translations as study", "study.content_id", "content.content_id")
       .join("content_translations as translation", "translation.content_id", "content.content_id")
-      .where("content.type", type)
+      .where("content.type", "word")
       .where("content.category_id", categoryId)
       .where("study.language_id", language_id)
       .where("translation.language_id", translation_language_id)      
       .select(
         "content.content_id",
         "content.type",
-        "content.image_path",
         "content.category_id",
+        "content.image_path",
         "study.value as study_value",
+        "study.sound_path as study_sound",
         "translation.value as translation_value",
-        "study.sound_path",
-        "study.title"
+        "translation.sound_path as translation_sound"
+      );
+      
+    res.json(content);
+  } catch (error) {
+    console.error("Error fetching user's content:", error);
+    res.status(500).json({ error: "Failed to load content" });
+  }
+});
+// GET SENTENCES
+router.get('/:courseId/categories/:categoryId/sentences', async(req, res) => {
+  try {
+    const userId = res.locals.auth.userId;
+    const { courseId, categoryId } = req.params;
+
+    // get course
+    const course = await knex("users_languages")
+      .where("user_language_id", courseId)
+      .first();
+
+    const { language_id, translation_language_id } = course;
+    
+    const content = await knex("content")
+      .join("content_translations as study", "study.content_id", "content.content_id")
+      .join("content_translations as translation", "translation.content_id", "content.content_id")
+      // pivot
+      .leftJoin("sentence_answers", "sentence_answers.sentence_content_id", "content.content_id")
+      .leftJoin("content_translations as answer_study", function () {
+        this.on("answer_study.content_id", "=", "sentence_answers.correct_word_content_id")
+        .andOn("answer_study.language_id", "=", knex.raw("?", [language_id]));
+      })
+      .leftJoin("content_translations as answer_translation", function () {
+        this.on("answer_translation.content_id", "=", "sentence_answers.correct_word_content_id")
+        .andOn("answer_translation.language_id", "=", knex.raw("?", [translation_language_id]));
+      })
+      .where("content.type", "sentence")
+      .where("content.category_id", categoryId)
+      .where("study.language_id", language_id)
+      .where("translation.language_id", translation_language_id)      
+      .select(
+        "content.content_id",
+        "content.type",
+        "content.category_id",
+        "content.image_path",
+
+        "study.value as study_value",
+        "answer_study.value as answer_study",
+        "study.sound_path as study_sound",
+        
+        "translation.value as translation_value",
+        "answer_translation.value as answer_translation"
+      );
+      
+    res.json(content);
+  } catch (error) {
+    console.error("Error fetching user's content:", error);
+    res.status(500).json({ error: "Failed to load content" });
+  }
+});
+// GET TEXTS
+router.get('/:courseId/categories/:categoryId/texts', async(req, res) => {
+  try {
+    const userId = res.locals.auth.userId;
+    const { courseId, categoryId } = req.params;
+
+    // get course
+    const course = await knex("users_languages")
+      .where("user_language_id", courseId)
+      .first();
+
+    const { language_id, translation_language_id } = course;
+    
+    const content = await knex("content")
+      .join("content_translations as study", "study.content_id", "content.content_id")
+      .join("content_translations as translation", "translation.content_id", "content.content_id")
+      .where("content.type", "text")
+      .where("content.category_id", categoryId)
+      .where("study.language_id", language_id)
+      .where("translation.language_id", translation_language_id)      
+      .select(
+        "content.content_id",
+        "content.type",
+        "content.category_id",
+        "study.title",
+        "content.image_path",
+        "study.value as study_value",
+        "study.sound_path as study_sound",
+        "translation.value as translation_value",
+        "translation.sound_path as translation_sound"
       );
       
     res.json(content);
