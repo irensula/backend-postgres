@@ -19,7 +19,11 @@ const buildWordQuery = ({ knex, course, categoryId }) => {
       knex.raw(
         `MAX(CASE WHEN t.language_id = ? THEN t.value END) as translation`,
         [course.translation_language_id]
-      )
+      ),
+      knex.raw(
+        `MAX(CASE WHEN t.language_id = ? THEN t.sound_path END) as translation_sound`,
+        [course.translation_language_id]
+      ),
     );
 };
 
@@ -67,7 +71,7 @@ const buildSentenceQuery = ({ knex, course, categoryId }) => {
       "sentence.image_path",
 
       knex.raw(
-        `MAX(CASE WHEN ct.language_id = ? THEN ct.value END) as study`,
+        `MAX(CASE WHEN ct.language_id = ? THEN ct.value END) as study_sentence`,
         [course.language_id]
       ),
       knex.raw(
@@ -77,6 +81,18 @@ const buildSentenceQuery = ({ knex, course, categoryId }) => {
       knex.raw(
         `MAX(CASE WHEN ct.language_id = ? THEN ct.sound_path END) as study_sound`,
         [course.language_id]
+      ),
+      knex.raw(
+        `MAX(CASE WHEN ct.language_id = ? THEN ct.value END) as translation_sentence`,
+        [course.translation_language_id]
+      ),
+      knex.raw(
+        `MAX(CASE WHEN at.language_id = ? THEN at.value END) as translation_answer`,
+        [course.translation_language_id]
+      ),
+      knex.raw(
+        `MAX(CASE WHEN ct.language_id = ? THEN ct.sound_path END) as translation_sound`,
+        [course.translation_language_id]
       )
     );
 };

@@ -204,7 +204,7 @@ router.get('/:courseId/categories/:categoryId/texts', async(req, res) => {
     res.status(500).json({ error: "Failed to load content" });
   }
 });
-// create course
+// CREATE COURSE
 router.post('/', async (req, res) => {
   try {
     const userId = res.locals.auth.userId;
@@ -490,6 +490,7 @@ router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req,
     }
 
     const content = await build({ knex, course, categoryId });
+    
     console.log("courseId:", courseId);
     console.log("userId:", userId);
     console.log("course:", course);
