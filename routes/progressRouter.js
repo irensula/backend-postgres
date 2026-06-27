@@ -3,43 +3,112 @@ let router = express.Router();
 const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 const bcrypt = require("bcryptjs");
-// get user's progress at current course
+// GET USER'S PROGRESS AT CURRENT COURSE
 router.get('/', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
-    // get user's courses
+    // 1. get user's courses
     const courses = await knex("users_languages")
-      .join("languages as study_lang", "study_lang.language_id", "users_languages.language_id")
-      .join("languages as trans_lang", "trans_lang.language_id", "users_languages.translation_language_id")
+      .join("languages as study_language", "study_language.language_id", "users_languages.language_id")
+      .join("languages as translation_language", "translation_language.language_id", "users_languages.translation_language_id")
+      .where("user_id", userId)
       .where("users_languages.user_id", userId)
       .select(
-        "users_languages.user_language_id as course",
-        "study_lang.name as studyLanguage",
-        "users_languages.user_id",
-        "users_languages.translation_language_id",
-        "trans_lang.name as translationLanguage",
-        "users_languages.last_category_id",
+          "users_languages.*",
+          "study_language.name as study_language_name",
+          "translation_language.name as translation_language_name"
       );
-    // get progress per course
-    const progress = await knex("progress")
+
+    if (!courses.length) {
+      return res.json([]);
+    }
+
+    const coursesIds = courses.map(c => c.user_language_id);
+
+    // 2. progress aggregated per course
+    const progressRows = await knex("progress")
+      .whereIn("user_language_id", coursesIds)
       .select(
-        "user_language_id",
-        knex.raw("COALESCE(SUM(score), 0) as totalScore") // total points per course
-      )
-      .groupBy("user_language_id");
-    // convert array to map for fast lookup (O(1))
-    const progressMap = Object.fromEntries(
-      progress.map(p => [
-        Number(p.user_language_id), // normalize key to number
-        Number(p.totalscore)] // normalize value to number
-      )
+        "progress.user_language_id",
+        "progress.category_id", 
+        "progress.exercise_id",
+        "progress.score"
+    )
+
+    // 3. max values
+    const totalCategories = await knex("categories").count("* as count").first();
+    const categoriesCount = Number(totalCategories.count);
+
+    const totalExercises = await knex("exercises").count("* as count").first();
+    const exercisesPerCategory = Number(totalExercises.count);
+    
+    const maxPoints = await knex("exercises").sum("max_score as total").first();
+    const maxPointsPerCategory = Number(maxPoints.total);
+
+    // 4. current category map
+    const categoriesMap = await knex("categories");
+
+    // 5. build response per course
+    const result = courses.map(course => {
+    const courseProgress = progressRows.filter(
+      p => p.user_language_id === course.user_language_id
     );
-    // merge progress into courses
-    const result = courses.map(course => ({
-      ...course,
-      totalScore: progressMap[course.course] || 0 // if course has no progress, default 0
-    }));
-    // return final API response for frontend
+
+    const points = courseProgress.reduce(
+      (sum, p) => sum + Number(p.score || 0),
+      0
+    );
+    
+    const totalExercisesCount = categoriesCount * exercisesPerCategory;
+
+    const totalMaxPoints = categoriesCount * maxPointsPerCategory;
+
+    const exercisesDone = courseProgress.reduce(
+      (sum) => sum + 1,
+      0
+    );
+
+    const categoriesDone = new Set(
+      courseProgress.map(p => p.category_id)
+    ).size;
+
+    const currentCategory = categoriesMap.find(
+      c => c.category_id === course.last_category_id
+    );
+
+    return {
+      courseId: course.user_language_id,
+
+      languages: {
+        study: course.language_id,
+        study_name: course.study_language_name, 
+        translation: course.translation_language_id,
+        translation_name: course.translation_language_name,
+      },
+
+      progressPercent: Math.round(
+        (points / totalMaxPoints) * 100
+      ),
+
+      categories: {
+        done: categoriesDone,
+        total: categoriesCount,
+      },
+
+      exercises: {
+        done: exercisesDone,
+        total: totalExercisesCount,
+      },
+
+      points: {
+        got: points,
+        max: totalMaxPoints,
+      },
+
+      currentCategory: currentCategory?.name || null,
+      };
+    });
+
     res.json(result);
 
   } catch (error) {
@@ -47,8 +116,7 @@ router.get('/', async(req, res) => {
     res.status(500).json({ error: error.message });
   }
 }); 
-
-// insert progress
+// POST PROGRESS
 router.post('/course/:courseId/category/:categoryId/exercise/:exerciseId', async (req, res) => {
   try {
     const userId = res.locals.auth.userId;

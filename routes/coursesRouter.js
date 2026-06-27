@@ -247,7 +247,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: "Failed to create course" });
   }
 });
-// edit translation language
+// EDIT TRANSLATION LANGUAGE
 router.put("/:id", async(req, res) => {
   try {
     const courseId = req.params.id;
@@ -290,7 +290,7 @@ router.put("/:id", async(req, res) => {
     res.status(500).json({ error: "Translation language update failed" });
   }
 })
-// delete course
+// DELETE COURSE
 router.delete('/:id', async (req, res) => {
   try {
     const courseId = req.params.id;
@@ -315,7 +315,7 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: "Failed to delete course" });
   }
 });
-// get info about current course
+// GET CURRENT COURSE INFO
 router.get('/:courseId/progress', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
@@ -373,87 +373,6 @@ router.get('/:courseId/progress', async(req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-// GET CONTENT FOR EXERCISES
-// router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req, res) => {
-//     const userId = res.locals.auth.userId;
-//     const { courseId, categoryId, exerciseId } = req.params;
-  
-//     // get exercise
-//     const exercise = await knex("exercises")
-//       .where("exercise_id", exerciseId)
-//       .first();
-
-//     if (!exercise) {
-//       return res.status(404).json({ error: "Exercise not found" });
-//     }
-
-//     // get course
-//     const course = await knex("users_languages")
-//       .where("user_language_id", courseId)
-//       .first();
-
-//     if (!course) {
-//       return res.status(404).json({ error: "Course not found" });
-//     }
-
-//     let content = [];
-
-//     let contentType = null;
-
-//     if (exercise.name === "MemoGame" || exercise.name === "MatchGame") {
-//       contentType = "word";
-//     }
-
-//     if (exercise.name === "GapsTask") {
-//       contentType = "sentence";
-//     }
-
-//     if (contentType) {
-//       const studyLangId = course.language_id;
-//       const transLangId = course.translation_language_id;
-
-//       content = await knex("content")
-//         .join("content_translations", "content_translations.content_id", "content.content_id")
-//         .where("content.category_id", categoryId)
-//         .where( "content.type", contentType)
-//         .groupBy("content.content_id", "content.type")
-//         .select(
-//           "content.content_id",
-//           "content.type",
-
-//           knex.raw(
-//             `MAX(
-//               CASE 
-//                 WHEN content_translations.language_id = ? 
-//                 THEN content_translations.value 
-//               END
-//             ) as study`, 
-//             [studyLangId]),
-
-//           knex.raw(
-//             `MAX(
-//               CASE 
-//                 WHEN content_translations.language_id = ? 
-//                 THEN content_translations.value 
-//               END
-//             ) as translation`, 
-//              [transLangId])
-//         );
-//     }
-      
-//     res.json({
-//       categoryId: Number(categoryId),
-
-//       exercise: {
-//         id: exercise.exercise_id,
-//         name: exercise.name,
-//         description: exercise.description,
-//         maxScore: exercise.max_score
-//       },
-
-//       content
-//     });
-// });
 // GET EXERCISES (MEMOGAME, MATCHGAME, GAPSTASK)
 router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req, res) => {
     const userId = res.locals.auth.userId;
@@ -491,9 +410,6 @@ router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req,
 
     const content = await build({ knex, course, categoryId });
     
-    console.log("courseId:", courseId);
-    console.log("userId:", userId);
-    console.log("course:", course);
     res.json({
       categoryId: Number(categoryId),
 
