@@ -17,7 +17,9 @@ router.get('/', async(req, res) => {
       .select(
         "users_languages.user_language_id as course",
         "study_lang.name as studyLanguage",
+        "study_lang.flag_path as studyFlag",
         "trans_lang.name as translationLanguage",
+        "trans_lang.flag_path as translationFlag",
         "users_languages.last_category_id as currentCategory"
       );
 
@@ -230,7 +232,7 @@ router.post('/', async (req, res) => {
       .first();
 
     if (existing) {
-        return res.status(400).json({ error: "Course already exists"});
+        return res.status(400).json({ error: "You have this course already!"});
     } 
 
     const course = await knex("users_languages")

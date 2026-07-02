@@ -20,6 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use("/images", express.static("assets/images"));
+
 // schemas and middleware
 let userschema = require("./schemas/userschema.json");
 let validateSchema = require("./middleware/validate");
