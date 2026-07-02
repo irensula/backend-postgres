@@ -325,7 +325,7 @@ router.get('/:courseId/progress', async(req, res) => {
       .join("languages", "languages.language_id", "users_languages.language_id")
       .leftJoin("categories", "categories.category_id", "users_languages.last_category_id")
       .where("users_languages.user_id", userId)
-      .where("users_languages.language_id", courseId)
+      .where("users_languages.user_language_id", courseId)
       .select(
         "languages.language_id as courseId",
         "languages.name as languageName",
@@ -336,21 +336,20 @@ router.get('/:courseId/progress', async(req, res) => {
       .first(); 
     
     const totalExercises = await knex("exercises")
-      .where("category_id", courseInfo.currentCategoryId)
       .count("exercise_id as total")
       .first();
 
     const completedExercises = await knex("progress")
       .join("users_languages", "users_languages.user_language_id", "progress.user_language_id")
       .where("users_languages.user_id", userId)
-      .where("users_languages.language_id", courseId)
+      .where("users_languages.user_language_id", courseId)
       .count("progress.exercise_id as completed")
       .first();
 
     const total = Number(totalExercises.total || 0);
     const done = Number(completedExercises.completed || 0);
 
-    const persent = 
+    const percent = 
       total > 0 
       ? Math.round((done / total) * 100) 
       : 0;
@@ -364,7 +363,7 @@ router.get('/:courseId/progress', async(req, res) => {
       progress: {
         completed: done,
         total,
-        persent
+        percent
       }
     });
 

@@ -8,13 +8,15 @@ router.get("/me", async (req, res) => {
   const userId = res.locals.auth.userId;
 
   const user = await knex("users")
+    .join("avatars", "avatars.avatar_id", "users.avatar_id")
     .where({ user_id: userId })
     .first()
     .select(
       "user_id",
       "username",
       "email",
-      "avatar_id",
+      "users.avatar_id as avatar_id",
+      "avatars.avatar_path as avatar_path",
       "ui_language_id"
     );
 
