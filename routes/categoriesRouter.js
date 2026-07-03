@@ -17,13 +17,21 @@ router.get('/:courseId', async(req, res) => {
       .first();
     
       if (!course) {
-      return res.status(404).json({
-        error: "Course not found"
-      });
+        return res.status(404).json({
+          error: "Course not found"
+        });
     }
 
     const categories = await knex("categories")
-      .orderBy("category_id");
+      .join("category_translations", "categories.category_id", "category_translations.category_id")
+      .where("category_translations.language_id", course.language_id)
+      .select(
+        "categories.category_id",
+        "categories.image_path",
+        "categories.sort_order",
+        "category_translations.name"
+      )
+      .orderBy("categories.sort_order");
 
     const categoryProgress = await knex("progress")
       .select(

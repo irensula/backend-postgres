@@ -326,6 +326,10 @@ router.get('/:courseId/progress', async(req, res) => {
     const courseInfo = await knex("users_languages")
       .join("languages", "languages.language_id", "users_languages.language_id")
       .leftJoin("categories", "categories.category_id", "users_languages.last_category_id")
+      .leftJoin("category_translations", function () {
+        this.on("category_translations.category_id", "=","categories.category_id")
+        .andOn("category_translations.language_id","=","users_languages.language_id");
+      })
       .where("users_languages.user_id", userId)
       .where("users_languages.user_language_id", courseId)
       .select(
@@ -333,7 +337,7 @@ router.get('/:courseId/progress', async(req, res) => {
         "languages.name as languageName",
         "languages.name as title",
         "categories.category_id as currentCategoryId",
-        "categories.name as currentCategory"
+        "category_translations.name as currentCategory"
       )
       .first(); 
     
@@ -359,7 +363,7 @@ router.get('/:courseId/progress', async(req, res) => {
     res.json({
       courseId: courseInfo.courseId,
       languageName: courseInfo.languageName,
-      title: courseInfo.name,
+      title: courseInfo.title,
       currentCategoryId: courseInfo.currentCategoryId,
       currentCategory: courseInfo.currentCategory,
       progress: {
@@ -431,7 +435,10 @@ router.get('/:courseId/categories/:categoryId/exercises', async(req, res) => {
     
     // get course
     const course = await knex("users_languages")
-      .where("user_language_id", courseId)
+      .where({
+        "user_language_id": courseId,
+        user_id: userId,
+      })
       .first();
     
     if (!course) {
@@ -440,6 +447,8 @@ router.get('/:courseId/categories/:categoryId/exercises', async(req, res) => {
 
     // get exercises
     const exercises = await knex("exercises")
+      .join("exercise_translations", "exercise_translations.exercise_id", "exercises.exercise_id")
+      .where("exercise_translations.language_id", course.language_id)
       .leftJoin("progress", function () {
         this.on("progress.exercise_id", "exercises.exercise_id")
           .andOn("progress.user_language_id", knex.raw("?", [courseId]))
@@ -447,10 +456,13 @@ router.get('/:courseId/categories/:categoryId/exercises', async(req, res) => {
       })
       .select(
         "exercises.exercise_id",
-        "exercises.name",
+        "exercise_translations.name",
+        "exercise_translations.description",
+        "exercises.screen_name",
         "exercises.max_score",
         knex.raw("COALESCE(progress.score, 0) as score")
-      );
+      )
+      .orderBy("exercises.sort_order");
 
     const result = exercises.map(ex => ({
       ...ex,
