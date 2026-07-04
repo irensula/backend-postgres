@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/images", express.static("assets/images"));
+app.use("/sounds", express.static("assets/sounds"));
 
 // schemas and middleware
 let userschema = require("./schemas/userschema.json");

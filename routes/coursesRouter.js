@@ -409,10 +409,12 @@ router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req,
       GapsTask: buildSentenceQuery
     };
 
-    const build = builders[exercise.name];
+    const build = builders[exercise.screen_name];
 
     if (!build) {
-      return res.status(400).json({ error: "Unknown exercise type" });
+      return res.status(400).json({
+        error: `Unknown exercise type: ${exercise.screen_name}`,
+      });
     }
 
     const content = await build({ knex, course, categoryId });
