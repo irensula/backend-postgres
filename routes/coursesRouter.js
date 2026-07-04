@@ -16,8 +16,10 @@ router.get('/', async(req, res) => {
       .where("users_languages.user_id", userId)
       .select(
         "users_languages.user_language_id as course",
+        "study_lang.language_id as studyLanguageId",
         "study_lang.name as studyLanguage",
         "study_lang.flag_path as studyFlag",
+        "trans_lang.language_id as translationLanguageId",
         "trans_lang.name as translationLanguage",
         "trans_lang.flag_path as translationFlag",
         "users_languages.last_category_id as currentCategory"
