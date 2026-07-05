@@ -137,7 +137,7 @@ router.post('/course/:courseId/category/:categoryId/exercise/:exerciseId', async
       .first();
 
     if (existing) {
-        return res.status(400).json({ error: "Progress for this exercise already exists"});
+        return res.status(400).json({ error: "We saved your result already!"});
     } 
 
     // 3. get exercise score

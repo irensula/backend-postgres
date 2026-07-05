@@ -4,6 +4,7 @@ const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 const bcrypt = require("bcryptjs");
 const { buildWordQuery, buildSentenceQuery } = require("../queries/exerciseContent");
+
 // GET USER COURSES
 router.get('/', async(req, res) => {
   try {
@@ -385,14 +386,7 @@ router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req,
     const userId = res.locals.auth.userId;
     const { courseId, categoryId, exerciseId } = req.params;
     const courseIdNum = Number(courseId);
-    // get exercise
-    const exercise = await knex("exercises")
-      .where("exercise_id", exerciseId)
-      .first();
-
-    if (!exercise) {
-      return res.status(404).json({ error: "Exercise not found" });
-    }
+    
 
     // get course
     const course = await knex("users_languages")
@@ -403,7 +397,30 @@ router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req,
       return res.status(404).json({ error: "Course not found" });
     }
 
+    // get exercise
+    const exercise = await knex("exercises")
+      .join("exercise_translations", "exercise_translations.exercise_id", "exercises.exercise_id")
+      .where("exercises.exercise_id", exerciseId)
+      .where(
+        "exercise_translations.language_id",
+        course.language_id
+      )
+      .select(
+        "exercises.exercise_id",
+        "exercises.screen_name",
+        "exercises.max_score",
+        "exercise_translations.name",
+        "exercise_translations.description"
+      )
+      .first();
+
+
+    if (!exercise) {
+      return res.status(404).json({ error: "Exercise not found" });
+    }
+
     const builders = {
+      WordsList: buildWordQuery,
       MemoGame: buildWordQuery,
       MatchGame: buildWordQuery,
       GapsTask: buildSentenceQuery
