@@ -3,7 +3,7 @@ let router = express.Router();
 const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 const bcrypt = require("bcryptjs");
-const { buildWordQuery, buildSentenceQuery } = require("../queries/exerciseContent");
+const { buildWordQuery, buildSentenceQuery, buildWholeSentenceQuery } = require("../queries/exerciseContent");
 
 // GET USER COURSES
 router.get('/', async(req, res) => {
@@ -421,6 +421,8 @@ router.get('/:courseId/categories/:categoryId/exercises/:exerciseId', async(req,
 
     const builders = {
       WordsList: buildWordQuery,
+      WordCard: buildWordQuery,
+      SentenceCard: buildWholeSentenceQuery,
       MemoGame: buildWordQuery,
       MatchGame: buildWordQuery,
       GapsTask: buildSentenceQuery
