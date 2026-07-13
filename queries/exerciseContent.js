@@ -173,8 +173,34 @@ const buildWholeSentenceQuery = async ({ knex, course, categoryId }) => {
     }));
 };
 
+const buildTextQuery = ({ knex, course, categoryId }) => {
+    return knex("content")
+      .join("content_translations as study", "study.content_id", "content.content_id")
+      .join("content_translations as translation", "translation.content_id", "content.content_id")
+      
+      .where("content.category_id", categoryId)
+      .where("content.type", "text")
+      .where("study.language_id", course.language_id)
+      .where("translation.language_id", course.translation_language_id)      
+      .select(
+        "content.content_id",
+        "content.type",
+        "content.category_id",
+        "content.image_path",
+
+        "study.title as study_title",
+        "study.value as study",
+        "study.sound_path as study_sound",
+
+        "translation.title as translation_title", 
+        "translation.value as translation",
+        "translation.sound_path as translation_sound"
+      );
+};
+
 module.exports = {
   buildWordQuery,
   buildSentenceQuery,
-  buildWholeSentenceQuery
+  buildWholeSentenceQuery,
+  buildTextQuery
 };
