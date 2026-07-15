@@ -7,83 +7,128 @@ const { buildWordQuery, buildSentenceQuery, buildWholeSentenceQuery, buildTextQu
 
 // GET USER COURSES
 router.get('/', async(req, res) => {
-  try {
-    const userId = res.locals.auth.userId;
+    try {
+      const userId = res.locals.auth.userId;
+      // 1. get user's courses
+      const courses = await knex("users_languages")
+        .join("languages as study_language", "study_language.language_id", "users_languages.language_id")
+        .join("languages as translation_language", "translation_language.language_id", "users_languages.translation_language_id")
+        .leftJoin("categories", "categories.category_id", "users_languages.last_category_id")
+        .leftJoin("category_translations", function () {
+          this.on(
+            "category_translations.category_id",
+            "=",
+            "categories.category_id"
+          ).andOn(
+            "category_translations.language_id",
+            "=",
+            "users_languages.language_id"
+          );
+        })
+        .where("users_languages.user_id", userId)
+        .select(
+            "users_languages.*",
+            "study_language.name as study_language_name",
+            "translation_language.name as translation_language_name",
+            "study_language.flag_path as study_flag_path",
+            "translation_language.flag_path as translation_flag_path",
+            "category_translations.name as currentCategory"
+        );
 
-    // 1. get courses
-    const courses = await knex("users_languages")
-      .join("languages as study_lang", "study_lang.language_id", "users_languages.language_id")
-      .join("languages as trans_lang", "trans_lang.language_id", "users_languages.translation_language_id")
-      .where("users_languages.user_id", userId)
-      .select(
-        "users_languages.user_language_id as course",
-        "study_lang.language_id as studyLanguageId",
-        "study_lang.name as studyLanguage",
-        "study_lang.flag_path as studyFlag",
-        "trans_lang.language_id as translationLanguageId",
-        "trans_lang.name as translationLanguage",
-        "trans_lang.flag_path as translationFlag",
-        "users_languages.last_category_id as currentCategory"
-      );
+      if (!courses.length) {
+        return res.json([]);
+      }
+      
+      const coursesIds = courses.map(c => c.user_language_id);
 
-    // 2. attach aggregated progress per course
-    const progress = await knex("progress")
-      .select(
-        "progress.user_language_id",
-        knex.raw("COALESCE(SUM(progress.score), 0) as total_score")
+      // 2. progress aggregated per course
+      const progressRows = await knex("progress")
+        .whereIn("user_language_id", coursesIds)
+        .select(
+          "progress.user_language_id",
+          "progress.category_id", 
+          "progress.exercise_id",
+          "progress.score"
       )
-      .groupBy("progress.user_language_id");
 
-    const progressMap = Object.fromEntries(
-      progress.map(p => [
-        Number(p.user_language_id), 
-        Number(p.total_score || 0)
-      ])
-    );
+      // 3. max values
+      const totalCategories = await knex("categories").count("* as count").first();
+      const categoriesCount = Number(totalCategories.count);
 
-    // 3. categories
-    const totalCategoriesRow = await knex("categories")
-      .count("category_id as total")
-      .first();
+      const exerciseTypesRow = await knex("exercises").count("* as count").first();
+      const exercisesPerCategory = Number(exerciseTypesRow.count);
+      
+      const maxPointsRow = await knex("exercises").sum("max_score as total").first();
+      const maxPointsPerCategory = Number(maxPointsRow.total);
 
-    const totalCategories = Number(totalCategoriesRow.total);
+      // 4. build response per course
+      const result = courses.map(course => {
+        const courseProgress = progressRows.filter(
+          p => p.user_language_id === course.user_language_id
+        );
 
-    // 4. completed categories per course
-    const completed = await knex("progress")
-      .join("categories", "categories.category_id", "progress.category_id")
-      .select("progress.user_language_id")
-      .whereIn("progress.user_language_id", courses.map(c => c.course))
-      .groupBy("progress.user_language_id")
-      .havingRaw("SUM(progress.score) > 0")
-      .countDistinct("categories.category_id as completed");
+        const points = courseProgress.reduce(
+          (sum, p) => sum + Number(p.score || 0),
+          0
+        );
+        
+        const totalMaxPoints = categoriesCount * maxPointsPerCategory;
 
-    const completedMap = Object.fromEntries(
-      completed.map(c => [c.user_language_id, Number(c.completed)])
-    );
+        const progressByCategory = {};
 
-    const result = courses.map(c => {
-      const totalScore = progressMap[c.course] || 0;
-      const done = completedMap[c.course] || 0;
+        courseProgress.forEach(p => {
+          if (!progressByCategory[p.category_id]) {
+            progressByCategory[p.category_id] = new Set();
+          }
+
+          progressByCategory[p.category_id].add(p.exercise_id);
+        });
+
+        const categoriesDone = Object.values(progressByCategory)
+          .filter(exercises => exercises.size === exercisesPerCategory)
+          .length;
 
       return {
-        ...c,
-        totalScore,
-        totalCategories,
-        completedCategories: done,
-        percent:
-          totalCategories > 0
-            ? Math.round((done / totalCategories) * 100)
-            : 0
-      };
-    });
-      
-    res.json(result);
+        course: course.user_language_id,
 
+        studyLanguageId: course.language_id,
+        studyLanguage: course.study_language_name, 
+        studyFlag: course.study_flag_path,
+
+        translationLanguageId: course.translation_language_id,
+        translationLanguage: course.translation_language_name,
+        translationFlag: course.translation_flag_path,
+
+        currentCategory: course.currentCategory,
+
+        completedCategories: categoriesDone,
+        totalCategories: categoriesCount,
+
+        percent: Math.round(
+          (points / totalMaxPoints) * 100
+        )
+      }
+      });
+
+      res.json(result);
+    
   } catch (error) {
     console.error("Error fetching user's courses:", error);
     res.status(500).json({ error: error.message });
   }
 });
+// "course": 1,
+//     "studyLanguageId": 1,
+//     "studyLanguage": "English",
+//     "studyFlag": "/images/flags/en_flag.png",
+//     "translationLanguageId": 3,
+//     "translationLanguage": "Ukrainian",
+//     "translationFlag": "/images/flags/uk_flag.png",
+//     "currentCategory": 2,
+//     "totalScore": 35,
+//     "totalCategories": 5,
+//     "completedCategories": 1,
+//     "percent": 20
 // GET WORDS
 router.get('/:courseId/categories/:categoryId/words', async(req, res) => {
   try {

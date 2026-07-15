@@ -9,15 +9,30 @@ router.get('/', async(req, res) => {
     const userId = res.locals.auth.userId;
     // 1. get user's courses
     const courses = await knex("users_languages")
-      .join("languages as study_language", "study_language.language_id", "users_languages.language_id")
-      .join("languages as translation_language", "translation_language.language_id", "users_languages.translation_language_id")
-      .where("user_id", userId)
-      .where("users_languages.user_id", userId)
-      .select(
-          "users_languages.*",
-          "study_language.name as study_language_name",
-          "translation_language.name as translation_language_name"
-      );
+        .join("languages as study_language", "study_language.language_id", "users_languages.language_id")
+        .join("languages as translation_language", "translation_language.language_id", "users_languages.translation_language_id")
+        .leftJoin("categories", "categories.category_id", "users_languages.last_category_id")
+        .leftJoin("category_translations", function () {
+          this.on(
+            "category_translations.category_id",
+            "=",
+            "categories.category_id"
+          ).andOn(
+            "category_translations.language_id",
+            "=",
+            "users_languages.language_id"
+          );
+        })
+        .where("user_id", userId)
+        .where("users_languages.user_id", userId)
+        .select(
+            "users_languages.*",
+            "study_language.name as study_language_name",
+            "translation_language.name as translation_language_name",
+            "study_language.flag_path as study_flag_path",
+            "translation_language.flag_path as translation_flag_path",
+            "category_translations.name as currentCategory"
+        );
 
     if (!courses.length) {
       return res.json([]);
@@ -45,36 +60,39 @@ router.get('/', async(req, res) => {
     const maxPoints = await knex("exercises").sum("max_score as total").first();
     const maxPointsPerCategory = Number(maxPoints.total);
 
-    // 4. current category map
-    const categoriesMap = await knex("categories");
-
-    // 5. build response per course
+    // 4. build response per course
     const result = courses.map(course => {
-    const courseProgress = progressRows.filter(
-      p => p.user_language_id === course.user_language_id
-    );
+      const courseProgress = progressRows.filter(
+        p => p.user_language_id === course.user_language_id
+      );
 
-    const points = courseProgress.reduce(
-      (sum, p) => sum + Number(p.score || 0),
-      0
-    );
-    
-    const totalExercisesCount = categoriesCount * exercisesPerCategory;
+      const points = courseProgress.reduce(
+        (sum, p) => sum + Number(p.score || 0),
+        0
+      );
+      
+      const totalExercisesCount = categoriesCount * exercisesPerCategory;
 
-    const totalMaxPoints = categoriesCount * maxPointsPerCategory;
+      const totalMaxPoints = categoriesCount * maxPointsPerCategory;
 
-    const exercisesDone = courseProgress.reduce(
-      (sum) => sum + 1,
-      0
-    );
+      const exercisesDone = courseProgress.reduce(
+        (sum) => sum + 1,
+        0
+      );
 
-    const categoriesDone = new Set(
-      courseProgress.map(p => p.category_id)
-    ).size;
+      const progressByCategory = {};
 
-    const currentCategory = categoriesMap.find(
-      c => c.category_id === course.last_category_id
-    );
+      courseProgress.forEach(p => {
+        if (!progressByCategory[p.category_id]) {
+          progressByCategory[p.category_id] = new Set();
+        }
+
+        progressByCategory[p.category_id].add(p.exercise_id);
+      });
+
+      const categoriesDone = Object.values(progressByCategory)
+        .filter(exercises => exercises.size === exercisesPerCategory)
+        .length;
 
     return {
       courseId: course.user_language_id,
@@ -82,8 +100,10 @@ router.get('/', async(req, res) => {
       languages: {
         study: course.language_id,
         study_name: course.study_language_name, 
+        study_flag: course.study_flag_path,
         translation: course.translation_language_id,
         translation_name: course.translation_language_name,
+        translation_flag: course.translation_flag_path,
       },
 
       progressPercent: Math.round(
@@ -105,7 +125,7 @@ router.get('/', async(req, res) => {
         max: totalMaxPoints,
       },
 
-      currentCategory: currentCategory?.name || null,
+      currentCategory: course.currentCategory,
       };
     });
 
