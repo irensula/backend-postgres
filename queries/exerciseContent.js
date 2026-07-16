@@ -29,40 +29,16 @@ const buildWordQuery = ({ knex, course, categoryId }) => {
 
 const buildSentenceQuery = ({ knex, course, categoryId }) => {
   return knex("content as sentence")
-    // sentence - answer pivot
-    .leftJoin(
-      "sentence_answers as sa",
-      "sa.sentence_content_id",
-      "sentence.content_id"
-    )
-
-    // correct answer word
-    .leftJoin(
-      "content as answer",
-      "answer.content_id",
-      "sa.correct_word_content_id"
-    )
-
     // sentence translations
-    .leftJoin(
-      "content_translations as ct",
-      "ct.content_id",
-      "sentence.content_id"
-    )
-
-    // answer word translations
-    .leftJoin(
-      "content_translations as at",
-      "at.content_id",
-      "answer.content_id"
-    )
+    .leftJoin("content_translations as ct", "ct.content_id", "sentence.content_id")
 
     .where("sentence.category_id", categoryId)
     .where("sentence.type", "sentence")
 
     .groupBy(
       "sentence.content_id",
-      "answer.content_id"
+      "sentence.type",
+      "sentence.image_path"
     )
 
     .select(
@@ -75,7 +51,7 @@ const buildSentenceQuery = ({ knex, course, categoryId }) => {
         [course.language_id]
       ),
       knex.raw(
-        `MAX(CASE WHEN at.language_id = ? THEN at.value END) as answer`,
+        `MAX(CASE WHEN ct.language_id = ? THEN ct.answer_value END) as answer`,
         [course.language_id]
       ),
       knex.raw(
@@ -87,7 +63,7 @@ const buildSentenceQuery = ({ knex, course, categoryId }) => {
         [course.translation_language_id]
       ),
       knex.raw(
-        `MAX(CASE WHEN at.language_id = ? THEN at.value END) as translation_answer`,
+        `MAX(CASE WHEN ct.language_id = ? THEN ct.answer_value END) as translation_answer`,
         [course.translation_language_id]
       ),
       knex.raw(
@@ -100,24 +76,15 @@ const buildSentenceQuery = ({ knex, course, categoryId }) => {
 
 const buildWholeSentenceQuery = async ({ knex, course, categoryId }) => {
   const rows = await knex("content as sentence")
-    // sentence - answer pivot
-    .leftJoin("sentence_answers as sa", "sa.sentence_content_id", "sentence.content_id")
-
-    // correct answer word
-    .leftJoin("content as answer", "answer.content_id", "sa.correct_word_content_id")
-
-    // sentence translations
     .leftJoin("content_translations as ct", "ct.content_id", "sentence.content_id")
-
-    // answer word translations
-    .leftJoin("content_translations as at", "at.content_id", "answer.content_id")
 
     .where("sentence.category_id", categoryId)
     .where("sentence.type", "sentence")
 
     .groupBy(
       "sentence.content_id",
-      "answer.content_id"
+      "sentence.type",
+      "sentence.image_path"
     )
 
     .select(
@@ -130,7 +97,7 @@ const buildWholeSentenceQuery = async ({ knex, course, categoryId }) => {
         [course.language_id]
       ),
       knex.raw(
-        `MAX(CASE WHEN at.language_id = ? THEN at.value END) as answer`,
+        `MAX(CASE WHEN ct.language_id = ? THEN ct.answer_value END) as answer`,
         [course.language_id]
       ),
       knex.raw(
@@ -142,7 +109,7 @@ const buildWholeSentenceQuery = async ({ knex, course, categoryId }) => {
         [course.translation_language_id]
       ),
       knex.raw(
-        `MAX(CASE WHEN at.language_id = ? THEN at.value END) as translation_answer`,
+        `MAX(CASE WHEN ct.language_id = ? THEN ct.answer_value END) as translation_answer`,
         [course.translation_language_id]
       ),
       knex.raw(
