@@ -366,10 +366,10 @@ router.delete('/:id', async (req, res) => {
   }
 });
 // GET CURRENT COURSE INFO
-router.get('/:courseId/progress', async(req, res) => {
+router.get('/:courseId/categories/:categoryId/progress', async(req, res) => {
   try {
     const userId = res.locals.auth.userId;
-    const { courseId } = req.params;
+    const { courseId, categoryId } = req.params;
 
     const courseInfo = await knex("users_languages")
       .join("languages", "languages.language_id", "users_languages.language_id")
@@ -397,6 +397,7 @@ router.get('/:courseId/progress', async(req, res) => {
       .join("users_languages", "users_languages.user_language_id", "progress.user_language_id")
       .where("users_languages.user_id", userId)
       .where("users_languages.user_language_id", courseId)
+      .where("category_id", categoryId)
       .count("progress.exercise_id as completed")
       .first();
 
