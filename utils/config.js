@@ -40,7 +40,8 @@ knex
   .catch((err) => {
     console.error("Database connection failed:", err.message);
   });
-
+  
+console.log("Service:", process.env.RAILWAY_SERVICE_NAME);
 console.log(
   Object.keys(process.env).sort()
 );
