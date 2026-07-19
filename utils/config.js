@@ -12,6 +12,10 @@ console.log("NODE_ENV:", process.env.NODE_ENV);
 const PORT = process.env.PORT;
 const SECRET = process.env.SECRET;
 
+console.log("DB_CLIENT:", process.env.DB_CLIENT);
+console.log("DATABASE_URL exists:", !!process.env.DATABASE_URL);
+console.log("DB_HOST:", process.env.DB_HOST);
+
 const DATABASE_OPTIONS = {
   client: process.env.DB_CLIENT,
   connection: process.env.DATABASE_URL
