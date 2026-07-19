@@ -41,6 +41,10 @@ knex
     console.error("Database connection failed:", err.message);
   });
 
+console.log(
+  Object.keys(process.env).sort()
+);
+
 module.exports = {
   DATABASE_OPTIONS,
   PORT,
