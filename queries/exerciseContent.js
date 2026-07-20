@@ -24,7 +24,8 @@ const buildWordQuery = ({ knex, course, categoryId }) => {
         `MAX(CASE WHEN t.language_id = ? THEN t.sound_path END) as translation_sound`,
         [course.translation_language_id]
       ),
-    );
+    )
+     .orderBy("c.content_id");
 };
 
 const buildSentenceQuery = ({ knex, course, categoryId }) => {

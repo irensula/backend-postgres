@@ -16,7 +16,7 @@ exports.seed = async function(knex) {
   const languageMap = Object.fromEntries(
     languages.map(lang => [lang.code, lang])
   );
-  
+
   const users_languages = await knex('users_languages').select('*');
   
   // 8. EXERCISES

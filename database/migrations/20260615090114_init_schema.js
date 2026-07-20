@@ -28,6 +28,8 @@ exports.up = async function(knex) {
   await knex.schema.createTable("categories", (t) => {
     t.increments("category_id").primary();
 
+    t.string("code").notNullable().unique();
+
     t.string("image_path").notNullable();
 
     t.integer("sort_order").notNullable().defaultTo(0);
