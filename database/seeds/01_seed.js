@@ -40,6 +40,10 @@ exports.seed = async function(knex) {
     { code: 'uk', name: 'Ukrainian', flag_path: '/images/flags/uk_flag.png' },
     { code: 'ru', name: 'Russian', flag_path: '/images/flags/ru_flag.png' },
   ]).returning('*');
+
+  const languageMap = Object.fromEntries(
+    languages.map(lang => [lang.code, lang])
+  );
   // 4. CATEGORIES
   const categories = await knex('categories').insert([
     { image_path: '/images/category_images/family.png', sort_order: 1 },
@@ -51,34 +55,34 @@ exports.seed = async function(knex) {
   // 5. CATEGORY TRANSLATIONS
   const category_translations = await knex("category_translations").insert([
     // Family
-    { category_id: categories[0].category_id, language_id: 1, name: "Family" },
-    { category_id: categories[0].category_id, language_id: 2, name: "Perhe" },
-    { category_id: categories[0].category_id, language_id: 3, name: "Сім'я" },
-    { category_id: categories[0].category_id, language_id: 4, name: "Семья" },
+    { category_id: categories[0].category_id, language_id: languageMap.en.language_id, name: "Family" },
+    { category_id: categories[0].category_id, language_id: languageMap.fi.language_id, name: "Perhe" },
+    { category_id: categories[0].category_id, language_id: languageMap.uk.language_id, name: "Сім'я" },
+    { category_id: categories[0].category_id, language_id: languageMap.ru.language_id, name: "Семья" },
 
     // School
-    { category_id: categories[1].category_id, language_id: 1, name: "School" },
-    { category_id: categories[1].category_id, language_id: 2, name: "Koulu" },
-    { category_id: categories[1].category_id, language_id: 3, name: "Школа" },
-    { category_id: categories[1].category_id, language_id: 4, name: "Школа" },
+    { category_id: categories[1].category_id, language_id: languageMap.en.language_id, name: "School" },
+    { category_id: categories[1].category_id, language_id: languageMap.fi.language_id, name: "Koulu" },
+    { category_id: categories[1].category_id, language_id: languageMap.uk.language_id, name: "Школа" },
+    { category_id: categories[1].category_id, language_id: languageMap.ru.language_id, name: "Школа" },
 
     // Food
-    { category_id: categories[2].category_id, language_id: 1, name: "Food" },
-    { category_id: categories[2].category_id, language_id: 2, name: "Ruoka" },
-    { category_id: categories[2].category_id, language_id: 3, name: "Їжа" },
-    { category_id: categories[2].category_id, language_id: 4, name: "Еда" },
+    { category_id: categories[2].category_id, language_id: languageMap.en.language_id, name: "Food" },
+    { category_id: categories[2].category_id, language_id: languageMap.fi.language_id, name: "Ruoka" },
+    { category_id: categories[2].category_id, language_id: languageMap.uk.language_id, name: "Їжа" },
+    { category_id: categories[2].category_id, language_id: languageMap.ru.language_id, name: "Еда" },
 
     // Transport
-    { category_id: categories[3].category_id, language_id: 1, name: "Transport" },
-    { category_id: categories[3].category_id, language_id: 2, name: "Liikenne" },
-    { category_id: categories[3].category_id, language_id: 3, name: "Транспорт" },
-    { category_id: categories[3].category_id, language_id: 4, name: "Транспорт" },
+    { category_id: categories[3].category_id, language_id: languageMap.en.language_id, name: "Transport" },
+    { category_id: categories[3].category_id, language_id: languageMap.fi.language_id, name: "Liikenne" },
+    { category_id: categories[3].category_id, language_id: languageMap.uk.language_id, name: "Транспорт" },
+    { category_id: categories[3].category_id, language_id: languageMap.ru.language_id, name: "Транспорт" },
 
     // Room
-    { category_id: categories[4].category_id, language_id: 1, name: "Room" },
-    { category_id: categories[4].category_id, language_id: 2, name: "Huone" },
-    { category_id: categories[4].category_id, language_id: 3, name: "Кімната" },
-    { category_id: categories[4].category_id, language_id: 4, name: "Комната" },
+    { category_id: categories[4].category_id, language_id: languageMap.en.language_id, name: "Room" },
+    { category_id: categories[4].category_id, language_id: languageMap.fi.language_id, name: "Huone" },
+    { category_id: categories[4].category_id, language_id: languageMap.uk.language_id, name: "Кімната" },
+    { category_id: categories[4].category_id, language_id: languageMap.ru.language_id, name: "Комната" },
   ]);
   // 6. USERS
   const password = "12345678";

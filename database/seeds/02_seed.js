@@ -173,7 +173,7 @@ await knex("exercise_translations").insert([
     { content_id: content[9].content_id, language_id: languages[0].language_id, value: "aunt", sound_path: "/sounds/family/words/en/aunt.mp3" },
     { content_id: content[9].content_id, language_id: languages[1].language_id, value: "täti", sound_path: "/sounds/family/words/fi/täti.mp3" },
     { content_id: content[9].content_id, language_id: languages[2].language_id, value: "тітка", sound_path: "/sounds/family/words/uk/тітка.mp3" },
-    { content_id: content[9].content_id, language_id: languages[3].language_id, value: "тётя", sound_path: "/sounds/family/words/ru/тетя.mp3" },
+    { content_id: content[9].content_id, language_id: languages[3].language_id, value: "тётя", sound_path: "/sounds/family/words/ru/тётя.mp3" },
     // uncle
     { content_id: content[10].content_id, language_id: languages[0].language_id, value: "uncle", sound_path: "/sounds/family/words/en/uncle.mp3" },
     { content_id: content[10].content_id, language_id: languages[1].language_id, value: "eno / setä", sound_path: "/sounds/family/words/fi/eno_setä.mp3" },
