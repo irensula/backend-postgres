@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> } 
@@ -82,7 +82,7 @@ exports.seed = async function(knex) {
   ]);
   // 6. USERS
   const password = "12345678";
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcryptjs.hash(password, 10);
   const users = await knex('users').insert([
     { 
       username: "testuser",
