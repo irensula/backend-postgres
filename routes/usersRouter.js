@@ -116,4 +116,28 @@ router.put("/:id/settings", async(req, res) => {
   }
 })
 
+// DELETE COURSE
+router.delete('/me', async (req, res) => {
+  try {
+    const userId = res.locals.auth.userId;
+
+    const deleteRows = await knex("users")
+      .where({
+        user_id: userId
+      })
+      .del();
+
+      if (deleteRows === 0) {
+        return res.status(404).json({
+          error: "Account not found"
+        });
+      }
+
+      res.json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error("Delete account error:", error);
+    res.status(500).json({ error: "Failed to delete account" });
+  }
+});
+
 module.exports = router;
