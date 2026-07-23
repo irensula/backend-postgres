@@ -22,6 +22,7 @@ app.use(cookieParser());
 
 app.use("/images", express.static("assets/images"));
 app.use("/sounds", express.static("assets/sounds"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // schemas and middleware
 let userschema = require("./schemas/userschema.json");
@@ -39,6 +40,12 @@ app.use("/courses", isAuthenticated, require("./routes/coursesRouter"));
 app.use("/categories", isAuthenticated, require("./routes/categoriesRouter"));
 app.use("/progress", isAuthenticated, require("./routes/progressRouter"));
 app.use("/version", require("./routes/versionRouter"));
+app.get("/delete-account", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "delete-account.html"));
+});
+app.get("/privacy-policy", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "privacy-policy.html"));
+});
 app.use("/", require("./routes/index"));
 
 module.exports = app;
