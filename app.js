@@ -40,11 +40,14 @@ app.use("/courses", isAuthenticated, require("./routes/coursesRouter"));
 app.use("/categories", isAuthenticated, require("./routes/categoriesRouter"));
 app.use("/progress", isAuthenticated, require("./routes/progressRouter"));
 app.use("/version", require("./routes/versionRouter"));
+app.get("/privacy-policy", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "privacy-policy.html"));
+});
 app.get("/delete-account", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "delete-account.html"));
 });
-app.get("/privacy-policy", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "privacy-policy.html"));
+app.get("/delete-data", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "delete-data.html"));
 });
 app.use("/", require("./routes/index"));
 
