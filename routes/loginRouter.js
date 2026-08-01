@@ -39,7 +39,7 @@ router.post("/", async (req, res, next) => {
         avatar_path: tempUser.avatar_path,
       };
       // create JWT
-      const token = jwt.sign(userForToken, config.SECRET, { expiresIn: "7d" });
+      const token = jwt.sign(userForToken, config.SECRET, { expiresIn: "30d" });
       // response
       return res.status(200).json({
         token,
