@@ -40,6 +40,9 @@ app.use("/courses", isAuthenticated, require("./routes/coursesRouter"));
 app.use("/categories", isAuthenticated, require("./routes/categoriesRouter"));
 app.use("/progress", isAuthenticated, require("./routes/progressRouter"));
 app.use("/version", require("./routes/versionRouter"));
+app.use("/push-token", isAuthenticated, require("./routes/pushTokenRouter"));
+app.use("/notifications", isAuthenticated, require("./routes/notificationsRouter"));
+// public pages
 app.get("/privacy-policy", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "privacy-policy.html"));
 });
