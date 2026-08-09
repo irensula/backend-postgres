@@ -203,61 +203,61 @@ await knex("exercise_translations").insert([
 
     // mother
     { content_id: content[12].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. Her name is Jane.", answer_value: "mother", sound_path: "/sounds/family/sentences/en/mother.mp3" },
-    { content_id: content[12].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Jane.", answer_value: "äiti", sound_path: "/sounds/family/sentences/fi/äiti.mp3" },
+    { content_id: content[12].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Jane.", answer_value: "äiti", sound_path: "/sounds/family/sentences/fi/äiti.mp3" },
     { content_id: content[12].content_id, language_id: languageMap.uk.language_id, value: "Це моя {{answer}}. Її звуть Джейн.", answer_value: "мама", sound_path: "/sounds/family/sentences/uk/мама.mp3" },
     { content_id: content[12].content_id, language_id: languageMap.ru.language_id, value: "Это моя {{answer}}. Ее зовут Джейн.", answer_value: "мама", sound_path: "/sounds/family/sentences/ru/мама.mp3" },
 
     // father
     { content_id: content[13].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. His name is John.", answer_value: "father", sound_path: "/sounds/family/sentences/en/father.mp3" },
-    { content_id: content[13].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on John.", answer_value: "isä", sound_path: "/sounds/family/sentences/fi/isä.mp3" },
+    { content_id: content[13].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on John.", answer_value: "isä", sound_path: "/sounds/family/sentences/fi/isä.mp3" },
     { content_id: content[13].content_id, language_id: languageMap.uk.language_id, value: "Це мій {{answer}}. Його звати Джон.", answer_value: "тато", sound_path: "/sounds/family/sentences/uk/тато.mp3" },
     { content_id: content[13].content_id, language_id: languageMap.ru.language_id, value: "Это мой {{answer}}. Его зовут Джон.", answer_value: "папа", sound_path: "/sounds/family/sentences/ru/папа.mp3" },
 
     // son
     { content_id: content[14].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. His name is Mikael.", answer_value: "son", sound_path: "/sounds/family/sentences/en/son.mp3" },
-    { content_id: content[14].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Mikael.", answer_value: "poika", sound_path: "/sounds/family/sentences/fi/poika.mp3" },
-    { content_id: content[14].content_id, language_id: languageMap.uk.language_id, value: "Це мій {{answer}}. Його звуть Мікаель.", answer_value: "син", sound_path: "/sounds/family/sentences/uk/син.mp3" },
+    { content_id: content[14].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Mikael.", answer_value: "poika", sound_path: "/sounds/family/sentences/fi/poika.mp3" },
+    { content_id: content[14].content_id, language_id: languageMap.uk.language_id, value: "Це мій {{answer}}. Його звати Мікаель.", answer_value: "син", sound_path: "/sounds/family/sentences/uk/син.mp3" },
     { content_id: content[14].content_id, language_id: languageMap.ru.language_id, value: "Это мой {{answer}}. Его зовут Микаэль.", answer_value: "сын", sound_path: "/sounds/family/sentences/ru/сын.mp3" },
 
     // daughter
     { content_id: content[15].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. Her name is Penny.", answer_value: "daughter", sound_path: "/sounds/family/sentences/en/daughter.mp3" },
-    { content_id: content[15].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Penny.", answer_value: "tytär", sound_path: "/sounds/family/sentences/fi/tytär.mp3" },
+    { content_id: content[15].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Penny.", answer_value: "tytär", sound_path: "/sounds/family/sentences/fi/tytär.mp3" },
     { content_id: content[15].content_id, language_id: languageMap.uk.language_id, value: "Це моя {{answer}}. Її звати Пенні.", answer_value: "донька", sound_path: "/sounds/family/sentences/uk/донька.mp3" },
     { content_id: content[15].content_id, language_id: languageMap.ru.language_id, value: "Это моя {{answer}}. Ее зовут Пенни.", answer_value: "дочь", sound_path: "/sounds/family/sentences/ru/дочь.mp3" },
 
     // sister
     { content_id: content[16].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. Her name is Johanna.", answer_value: "sister", sound_path: "/sounds/family/sentences/en/sister.mp3" },
-    { content_id: content[16].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Johanna.", answer_value: "sisko", sound_path: "/sounds/family/sentences/fi/sisko.mp3" },
+    { content_id: content[16].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Johanna.", answer_value: "sisko", sound_path: "/sounds/family/sentences/fi/sisko.mp3" },
     { content_id: content[16].content_id, language_id: languageMap.uk.language_id, value: "Це моя {{answer}}. Її звати Йоганна.", answer_value: "сестра", sound_path: "/sounds/family/sentences/uk/сестра.mp3" },
     { content_id: content[16].content_id, language_id: languageMap.ru.language_id, value: "Это моя {{answer}}. Её зовут Йоханна.", answer_value: "сестра", sound_path: "/sounds/family/sentences/ru/сестра.mp3" },
 
     // brother
     { content_id: content[17].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. His name is Jack.", answer_value: "brother", sound_path: "/sounds/family/sentences/en/brother.mp3" },
-    { content_id: content[17].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Jack.", answer_value: "veli", sound_path: "/sounds/family/sentences/fi/veli.mp3" },
+    { content_id: content[17].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Jack.", answer_value: "veli", sound_path: "/sounds/family/sentences/fi/veli.mp3" },
     { content_id: content[17].content_id, language_id: languageMap.uk.language_id, value: "Це мій {{answer}}. Його звати Джек.", answer_value: "брат", sound_path: "/sounds/family/sentences/uk/брат.mp3" },
     { content_id: content[17].content_id, language_id: languageMap.ru.language_id, value: "Это мой {{answer}}. Его зовут Джек.", answer_value: "брат", sound_path: "/sounds/family/sentences/ru/брат.mp3" },
 
     // grandmother
     { content_id: content[18].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. Her name is Lily.", answer_value: "grandmother", sound_path: "/sounds/family/sentences/en/grandmother.mp3" },
-    { content_id: content[18].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Lily.", answer_value: "isoäiti", sound_path: "/sounds/family/sentences/fi/isoäiti.mp3" },
+    { content_id: content[18].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Lily.", answer_value: "isoäiti", sound_path: "/sounds/family/sentences/fi/isoäiti.mp3" },
     { content_id: content[18].content_id, language_id: languageMap.uk.language_id, value: "Це моя {{answer}}. Її звати Лілі.", answer_value: "бабуся", sound_path: "/sounds/family/sentences/uk/бабуся.mp3" },
     { content_id: content[18].content_id, language_id: languageMap.ru.language_id, value: "Это моя {{answer}}. Ее зовут Лили.", answer_value: "бабушка", sound_path: "/sounds/family/sentences/ru/бабушка.mp3" },
 
     // grandfather
     { content_id: content[19].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. His name is Leonard.", answer_value: "grandfather", sound_path: "/sounds/family/sentences/en/grandfather.mp3" },
-    { content_id: content[19].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Leonard.", answer_value: "isoisä", sound_path: "/sounds/family/sentences/fi/isoisä.mp3" },
+    { content_id: content[19].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Leonard.", answer_value: "isoisä", sound_path: "/sounds/family/sentences/fi/isoisä.mp3" },
     { content_id: content[19].content_id, language_id: languageMap.uk.language_id, value: "Це мій {{answer}}. Його звати Леонард.", answer_value: "дідусь", sound_path: "/sounds/family/sentences/uk/дідусь.mp3" },
     { content_id: content[19].content_id, language_id: languageMap.ru.language_id, value: "Это мой {{answer}}. Его зовут Леонард.", answer_value: "дедушка", sound_path: "/sounds/family/sentences/ru/дедушка.mp3" },
 
     // aunt
     { content_id: content[20].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. Her name is Emily.", answer_value: "aunt", sound_path: "/sounds/family/sentences/en/aunt.mp3" },
-    { content_id: content[20].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Emily.", answer_value: "täti", sound_path: "/sounds/family/sentences/fi/täti.mp3" },
+    { content_id: content[20].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Emily.", answer_value: "täti", sound_path: "/sounds/family/sentences/fi/täti.mp3" },
     { content_id: content[20].content_id, language_id: languageMap.uk.language_id, value: "Це моя {{answer}}. Її звати Емілі.", answer_value: "тітка", sound_path: "/sounds/family/sentences/uk/тітка.mp3" },
     { content_id: content[20].content_id, language_id: languageMap.ru.language_id, value: "Это моя {{answer}}. Её зовут Эмили.", answer_value: "тетя", sound_path: "/sounds/family/sentences/ru/тетя.mp3" },
 
     // uncle
     { content_id: content[21].content_id, language_id: languageMap.en.language_id, value: "This is my {{answer}}. His name is Bill.", answer_value: "uncle", sound_path: "/sounds/family/sentences/en/uncle.mp3" },
-    { content_id: content[21].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimensä on Bill.", answer_value: "setä", sound_path: "/sounds/family/sentences/fi/eno_setä.mp3" },
+    { content_id: content[21].content_id, language_id: languageMap.fi.language_id, value: "Tämä on minun {{answer}}. Hänen nimi on Bill.", answer_value: "setä", sound_path: "/sounds/family/sentences/fi/eno_setä.mp3" },
     { content_id: content[21].content_id, language_id: languageMap.uk.language_id, value: "Це мій {{answer}}. Його звати Білл.", answer_value: "дядько", sound_path: "/sounds/family/sentences/uk/дядько.mp3" },
     { content_id: content[21].content_id, language_id: languageMap.ru.language_id, value: "Это мой {{answer}}. Его зовут Билл.", answer_value: "дядя", sound_path: "/sounds/family/sentences/ru/дядя.mp3" },
 
@@ -380,7 +380,7 @@ await knex("exercise_translations").insert([
     // teacher
     { content_id: content[36].content_id, language_id: languageMap.en.language_id, value: "We have a good {{answer}}.", answer_value: "teacher", sound_path: "/sounds/school/sentences/en/teacher.mp3" },
     { content_id: content[36].content_id, language_id: languageMap.fi.language_id, value: "Meillä on hyvä {{answer}}.", answer_value: "opettaja", sound_path: "/sounds/school/sentences/fi/opettaja.mp3" },
-    { content_id: content[36].content_id, language_id: languageMap.uk.language_id, value: "У нас хороший {{answer}}.", answer_value: "учитель", sound_path: "/sounds/school/sentences/uk/вчитель.mp3" },
+    { content_id: content[36].content_id, language_id: languageMap.uk.language_id, value: "У нас хороший {{answer}}.", answer_value: "вчитель", sound_path: "/sounds/school/sentences/uk/вчитель.mp3" },
     { content_id: content[36].content_id, language_id: languageMap.ru.language_id, value: "У нас хороший {{answer}}.", answer_value: "учитель", sound_path: "/sounds/school/sentences/ru/учитель.mp3" },
 
     // student
@@ -398,7 +398,7 @@ await knex("exercise_translations").insert([
     // notebook
     { content_id: content[39].content_id, language_id: languageMap.en.language_id, value: "I write in my {{answer}}.", answer_value: "notebook", sound_path: "/sounds/school/sentences/en/notebook.mp3" },
     { content_id: content[39].content_id, language_id: languageMap.fi.language_id, value: "Minä kirjoitan {{answer}}.", answer_value: "vihkoon", sound_path: "/sounds/school/sentences/fi/vihko.mp3" },
-    { content_id: content[39].content_id, language_id: languageMap.uk.language_id, value: "Я пишу у {{answer}}.", answer_value: "зошиті", sound_path: "/sounds/school/sentences/uk/зошит.mp3" },
+    { content_id: content[39].content_id, language_id: languageMap.uk.language_id, value: "Я пишу в {{answer}}.", answer_value: "зошиті", sound_path: "/sounds/school/sentences/uk/зошит.mp3" },
     { content_id: content[39].content_id, language_id: languageMap.ru.language_id, value: "Я пишу в {{answer}}.", answer_value: "тетради", sound_path: "/sounds/school/sentences/ru/тетрадь.mp3" },
 
     // pen
@@ -428,7 +428,7 @@ await knex("exercise_translations").insert([
     // break
     { content_id: content[44].content_id, language_id: languageMap.en.language_id, value: "Students go outside on a {{answer}}.", answer_value: "break", sound_path: "/sounds/school/sentences/en/break.mp3" },
     { content_id: content[44].content_id, language_id: languageMap.fi.language_id, value: "Oppilaat menevät ulos {{answer}}.", answer_value: "välitunnilla", sound_path: "/sounds/school/sentences/fi/välitunti.mp3" },
-    { content_id: content[44].content_id, language_id: languageMap.uk.language_id, value: "Учні виходять надвір на {{answer}}.", answer_value: "перерві", sound_path: "/sounds/school/sentences/uk/перерва.mp3" },
+    { content_id: content[44].content_id, language_id: languageMap.uk.language_id, value: "Учні виходять на вулицю на {{answer}}.", answer_value: "перерві", sound_path: "/sounds/school/sentences/uk/перерва.mp3" },
     { content_id: content[44].content_id, language_id: languageMap.ru.language_id, value: "Ученики выходят на улицу на {{answer}}.", answer_value: "перемене", sound_path: "/sounds/school/sentences/ru/перемена.mp3" },
 
     // SCHOOL (TEXT)

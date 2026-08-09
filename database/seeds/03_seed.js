@@ -219,7 +219,7 @@ exports.seed = async function(knex) {
     // rice
     { content_id: content[26].content_id, language_id: languageMap.en.language_id, value: "I eat {{answer}} with fish.", answer_value: "rice", sound_path: "/sounds/food/sentences/en/rice.mp3" },
     { content_id: content[26].content_id, language_id: languageMap.fi.language_id, value: "Syön {{answer}} kalan kanssa.", answer_value: "riisiä", sound_path: "/sounds/food/sentences/fi/riisi.mp3" },
-    { content_id: content[26].content_id, language_id: languageMap.uk.language_id, value: "Я їм {{answer}} з рибою.", answer_value: "рис", sound_path: "/sounds/food/sentences/uk/рис.mp3" },
+    { content_id: content[26].content_id, language_id: languageMap.uk.language_id, value: "Я їм {{answer}} із рибою.", answer_value: "рис", sound_path: "/sounds/food/sentences/uk/рис.mp3" },
     { content_id: content[26].content_id, language_id: languageMap.ru.language_id, value: "Я ем {{answer}} с рыбой.", answer_value: "рис", sound_path: "/sounds/food/sentences/ru/рис.mp3" },
 
     // bread
@@ -285,7 +285,7 @@ exports.seed = async function(knex) {
     {
       content_id: content[32].content_id,
       language_id: languageMap.ru.language_id,
-      value: "Привет! Меня зовут Эмма. Каждый день я ем здоровую пищу. Утром я завтракаю. Я ем кашу или яйцо и пью молоко. На обед я ем картофель с мясом. На десерт я ем яблоко или банан. На ужин я ем рыбу с рисом. Перед сном я ем хлеб с маслом и сыром и пью стакан молока. Я люблю здоровую пищу.",
+      value: "Привет! Меня зовут Эмма. Каждый день я ем здоровую еду. Утром я завтракаю. Я ем кашу или яйцо и пью молоко. На обед я ем картофель с мясом. На десерт я ем яблоко или банан. На ужин я ем рыбу с рисом. Перед сном я ем хлеб с маслом и сыром и пью стакан молока. Я люблю здоровую еду.",
       sound_path: "/sounds/food/text/ru_food.mp3",
       title: "Еда"
     },
