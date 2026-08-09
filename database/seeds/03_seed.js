@@ -267,7 +267,7 @@ exports.seed = async function(knex) {
     {
       content_id: content[32].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Hei! Minun nimi on Emma. Syön terveellistä ruokaa joka päivä. Aamulla syön aamiaisen. Syön puuroa tai kananmunan ja juon maitoa. Lounaaksi syön perunoita ja lihaa. Jälkiruoaksi syön omenan tai banaanin. Päivälliseksi syön kalaa ja riisiä. Ennen nukkumaanmenoa syön leipää voin ja juuston kanssa ja juon lasillisen maitoa. Pidän terveellisestä ruoasta.",
+      value: "Hei! Minun nimi on Emma. Syön terveellistä ruokaa joka päivä. Aamulla syön aamiaisen. Syön puuroa tai kananmunan ja juon maitoa. Lounaaksi syön perunoita ja lihaa. Jälkiruoaksi syön omenan tai banaanin. Päivälliseksi syön kalaa ja riisiä. Ennen nukkumaanmenoa syön leipää voilla ja juustolla ja juon lasillisen maitoa. Pidän terveellisestä ruoasta.",
       sound_path: "/sounds/food/text/fi_food.mp3",
       title: "Ruoka"
     },

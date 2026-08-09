@@ -446,9 +446,9 @@ await knex("exercise_translations").insert([
     {
       content_id: content[45].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Hei! Minun nimi on Emma. Olen oppilas. Joka aamu menen kouluun. Meidän luokkahuone on suuri ja valoisa. Opettaja on erittäin ystävällinen. Minulla on koululaukussa kirja, vihko, kynä ja lyijykynä. Luen kirjaa ja kirjoitan vihkoon kynällä. Piirrän lyijykynällä. Istumme pulpeteissa ja opimme paljon uusia asioita. Meillä on neljä oppituntia joka päivä. Välitunnilla minä ja ystävä menemme ulos ja leikimme yhdessä. Pidän koulusta todella paljon.",
+      value: "Hei! Minun nimi on Emma. Olen oppilas. Joka aamu menen kouluun. Meidän luokkahuone on suuri ja valoisa. Opettaja on erittäin ystävällinen. Minulla on koululaukussa kirja, vihko, kynä ja lyijykynä. Luen kirjaa ja kirjoitan vihkoon kynällä. Piirrän lyijykynällä. Istumme pulpettien ääressä ja opimme paljon uusia asioita. Meillä on neljä oppituntia joka päivä. Välitunnilla menemme kavereiden kanssa ulos ja leikimme yhdessä. Pidän koulusta todella paljon.",
       sound_path: "/sounds/school/text/fi_school.mp3",
-      title: "Minun kouluni"
+      title: "Minun koulu"
     },
 
     // Ukrainian
