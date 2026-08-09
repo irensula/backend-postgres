@@ -373,7 +373,7 @@ await knex("exercise_translations").insert([
 
     // classroom
     { content_id: content[35].content_id, language_id: languageMap.en.language_id, value: "Our {{answer}} is big and light.", answer_value: "classroom", sound_path: "/sounds/school/sentences/en/classroom.mp3" },
-    { content_id: content[35].content_id, language_id: languageMap.fi.language_id, value: "Meidän {{answer}} on suuri ja valoisa.", answer_value: "luokka", sound_path: "/sounds/school/sentences/fi/luokkahuone.mp3" },
+    { content_id: content[35].content_id, language_id: languageMap.fi.language_id, value: "Meidän {{answer}} on suuri ja valoisa.", answer_value: "luokkahuone", sound_path: "/sounds/school/sentences/fi/luokkahuone.mp3" },
     { content_id: content[35].content_id, language_id: languageMap.uk.language_id, value: "Наш {{answer}} великий і світлий.", answer_value: "клас", sound_path: "/sounds/school/sentences/uk/клас.mp3" },
     { content_id: content[35].content_id, language_id: languageMap.ru.language_id, value: "Наш {{answer}} большой и светлый.", answer_value: "класс", sound_path: "/sounds/school/sentences/ru/класс.mp3" },
 
@@ -446,7 +446,7 @@ await knex("exercise_translations").insert([
     {
       content_id: content[45].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Hei! Minun nimeni on Emma. Olen oppilas. Joka aamu menen kouluun. Meidän luokkahuone on suuri ja valoisa. Opettaja on erittäin ystävällinen. Minulla on koululaukussa kirja, vihko, kynä ja lyijykynä. Luen kirjaa ja kirjoitan vihkoon kynällä. Piirrän lyijykynällä. Istumme pulpeteissa ja opimme paljon uusia asioita. Meillä on neljä oppituntia joka päivä. Välitunnilla minä ja ystävä menemme ulos ja leikimme yhdessä. Pidän koulusta todella paljon.",
+      value: "Hei! Minun nimi on Emma. Olen oppilas. Joka aamu menen kouluun. Meidän luokkahuone on suuri ja valoisa. Opettaja on erittäin ystävällinen. Minulla on koululaukussa kirja, vihko, kynä ja lyijykynä. Luen kirjaa ja kirjoitan vihkoon kynällä. Piirrän lyijykynällä. Istumme pulpeteissa ja opimme paljon uusia asioita. Meillä on neljä oppituntia joka päivä. Välitunnilla minä ja ystävä menemme ulos ja leikimme yhdessä. Pidän koulusta todella paljon.",
       sound_path: "/sounds/school/text/fi_school.mp3",
       title: "Minun kouluni"
     },
