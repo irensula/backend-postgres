@@ -237,7 +237,7 @@ exports.seed = async function(knex) {
 
     // Finnish
     {
-      content_id: content[32].content_id,
+      content_id: content[28].content_id,
       language_id: languageMap.fi.language_id,
       value: "Käytämme kulkuvälineitä joka päivä. Menen kouluun polkupyörällä. Minun isä menee töihin autolla, ja minun äiti menee töihin bussilla. Täti menee töihin raitiovaunulla. Setä menee töihin metrolla. Joskus meidän perhee matkustaa junalla tai lentokoneella. Isoisä matkustaa mielellään helikopterilla. Veli ajaa moottoripyörällä. Kävelemme jalkakäytävällä ja ylitämme tien suojatiellä. Pysähdymme, kun liikennevalo on punainen. Pidän matkustamisesta minun perheen kanssa.",
       sound_path: "/sounds/transport/text/fi_transport.mp3",
@@ -246,7 +246,7 @@ exports.seed = async function(knex) {
 
     // Ukrainian
     {
-      content_id: content[32].content_id,
+      content_id: content[28].content_id,
       language_id: languageMap.uk.language_id,
       value: "Ми користуємося транспортом щодня. Я їду до школи на велосипеді. Мій тато їде на роботу машиною, а моя мама їде на роботу автобусом. Моя тітка їде на роботу тролейбусом. Мій дядько їде на роботу метро. Іноді моя сім'я подорожує потягом або літаком. Мій дідусь любить подорожувати гелікоптером. Мій брат їздить на мотоциклі. Ми ходимо тротуаром і переходимо дорогу на пішохідному переході. Ми зупиняємося, коли світлофор червоний. Я люблю подорожувати зі своєю сім'єю.",
       sound_path: "/sounds/transport/text/uk_transport.mp3",
@@ -255,11 +255,11 @@ exports.seed = async function(knex) {
 
     // Russian
     {
-      content_id: content[32].content_id,
+      content_id: content[28].content_id,
       language_id: languageMap.ru.language_id,
       value: "Мы пользуемся транспортом каждый день. Я езжу в школу на велосипеде. Мой папа ездит на работу на машине, а моя мама ездит на работу на автобусе. Моя тётя ездит на работу на троллейбусе. Мой дядя ездит на работу на метро. Иногда моя семья путешествует на поезде или самолёте. Мой дедушка любит путешествовать на вертолёте. Мой брат ездит на мотоцикле. Мы ходим по тротуару и переходим дорогу по пешеходному переходу. Мы останавливаемся, когда светофор красный. Я люблю путешествовать со своей семьёй.",
       sound_path: "/sounds/transport/text/ru_transport.mp3",
-      title: "Транспорт"
+      title: "Еда"
     },
   ]).returning('*');
 };
