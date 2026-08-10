@@ -154,25 +154,25 @@ exports.seed = async function(knex) {
 
     // car
     { content_id: content[16].content_id, language_id: languageMap.en.language_id, value: "My father goes by {{answer}}.", answer_value: "car", sound_path: "/sounds/transport/sentences/en/car.mp3" },
-    { content_id: content[16].content_id, language_id: languageMap.fi.language_id, value: "Isäni menee {{answer}}.", answer_value: "autolla", sound_path: "/sounds/transport/sentences/fi/auto.mp3" },
+    { content_id: content[16].content_id, language_id: languageMap.fi.language_id, value: "Minun isä menee {{answer}}.", answer_value: "autolla", sound_path: "/sounds/transport/sentences/fi/auto.mp3" },
     { content_id: content[16].content_id, language_id: languageMap.uk.language_id, value: "Мій тато їде на {{answer}}.", answer_value: "машині", sound_path: "/sounds/transport/sentences/uk/автомобіль.mp3" },
     { content_id: content[16].content_id, language_id: languageMap.ru.language_id, value: "Мой папа ездит на {{answer}}.", answer_value: "машине", sound_path: "/sounds/transport/sentences/ru/машина.mp3" },
 
     // bus
     { content_id: content[17].content_id, language_id: languageMap.en.language_id, value: "My mother goes by {{answer}}.", answer_value: "bus", sound_path: "/sounds/transport/sentences/en/bus.mp3" },
-    { content_id: content[17].content_id, language_id: languageMap.fi.language_id, value: "Äitini menee {{answer}}.", answer_value: "bussilla", sound_path: "/sounds/transport/sentences/fi/bussi.mp3" },
+    { content_id: content[17].content_id, language_id: languageMap.fi.language_id, value: "Minun äiti menee {{answer}}.", answer_value: "bussilla", sound_path: "/sounds/transport/sentences/fi/bussi.mp3" },
     { content_id: content[17].content_id, language_id: languageMap.uk.language_id, value: "Моя мама їде {{answer}}.", answer_value: "автобусом", sound_path: "/sounds/transport/sentences/uk/автобус.mp3" },
     { content_id: content[17].content_id, language_id: languageMap.ru.language_id, value: "Моя мама ездит на {{answer}}.", answer_value: "автобусе", sound_path: "/sounds/transport/sentences/ru/автобус.mp3" },
 
     // trolleybus
     { content_id: content[18].content_id, language_id: languageMap.en.language_id, value: "My sister goes by {{answer}}.", answer_value: "trolleybus", sound_path: "/sounds/transport/sentences/en/trolleybus.mp3" },
-    { content_id: content[18].content_id, language_id: languageMap.fi.language_id, value: "Siskoni menee {{answer}}.", answer_value: "johdinautolla", sound_path: "/sounds/transport/sentences/fi/johdinauto.mp3" },
+    { content_id: content[18].content_id, language_id: languageMap.fi.language_id, value: "Minun sisko menee {{answer}}.", answer_value: "johdinautolla", sound_path: "/sounds/transport/sentences/fi/johdinauto.mp3" },
     { content_id: content[18].content_id, language_id: languageMap.uk.language_id, value: "Моя сестра їде {{answer}}.", answer_value: "тролейбусом", sound_path: "/sounds/transport/sentences/uk/тролейбус.mp3" },
     { content_id: content[18].content_id, language_id: languageMap.ru.language_id, value: "Моя сестра ездит на {{answer}}.", answer_value: "троллейбусе", sound_path: "/sounds/transport/sentences/ru/троллейбус.mp3" },
 
     // metro
     { content_id: content[19].content_id, language_id: languageMap.en.language_id, value: "My brother goes by {{answer}}.", answer_value: "metro", sound_path: "/sounds/transport/sentences/en/metro.mp3" },
-    { content_id: content[19].content_id, language_id: languageMap.fi.language_id, value: "Veljeni menee {{answer}}.", answer_value: "metrolla", sound_path: "/sounds/transport/sentences/fi/metro.mp3" },
+    { content_id: content[19].content_id, language_id: languageMap.fi.language_id, value: "Minun veli menee {{answer}}.", answer_value: "metrolla", sound_path: "/sounds/transport/sentences/fi/metro.mp3" },
     { content_id: content[19].content_id, language_id: languageMap.uk.language_id, value: "Мій брат їде на {{answer}}.", answer_value: "метро", sound_path: "/sounds/transport/sentences/uk/метро.mp3" },
     { content_id: content[19].content_id, language_id: languageMap.ru.language_id, value: "Мой брат ездит на {{answer}}.", answer_value: "метро", sound_path: "/sounds/transport/sentences/ru/метро.mp3" },
 
@@ -190,13 +190,13 @@ exports.seed = async function(knex) {
 
     // helicopter
     { content_id: content[22].content_id, language_id: languageMap.en.language_id, value: "My father travels by {{answer}}.", answer_value: "helicopter", sound_path: "/sounds/transport/sentences/en/helicopter.mp3" },
-    { content_id: content[22].content_id, language_id: languageMap.fi.language_id, value: "Isäni matkustaa {{answer}}.", answer_value: "helikopterilla", sound_path: "/sounds/transport/sentences/fi/helikopteri.mp3" },
+    { content_id: content[22].content_id, language_id: languageMap.fi.language_id, value: "Minun isä matkustaa {{answer}}.", answer_value: "helikopterilla", sound_path: "/sounds/transport/sentences/fi/helikopteri.mp3" },
     { content_id: content[22].content_id, language_id: languageMap.uk.language_id, value: "Мій тато подорожує {{answer}}.", answer_value: "гелікоптером", sound_path: "/sounds/transport/sentences/uk/гелікоптер.mp3" },
     { content_id: content[22].content_id, language_id: languageMap.ru.language_id, value: "Мой папа путешествует на {{answer}}.", answer_value: "вертолёте", sound_path: "/sounds/transport/sentences/ru/вертолёт.mp3" },
 
     // motorcycle
     { content_id: content[23].content_id, language_id: languageMap.en.language_id, value: "My brother rides a {{answer}}.", answer_value: "motorcycle", sound_path: "/sounds/transport/sentences/en/motorcycle.mp3" },
-    { content_id: content[23].content_id, language_id: languageMap.fi.language_id, value: "Veljeni ajaa {{answer}}.", answer_value: "moottoripyörällä", sound_path: "/sounds/transport/sentences/fi/moottoripyörä.mp3" },
+    { content_id: content[23].content_id, language_id: languageMap.fi.language_id, value: "Minun veli ajaa {{answer}}.", answer_value: "moottoripyörällä", sound_path: "/sounds/transport/sentences/fi/moottoripyörä.mp3" },
     { content_id: content[23].content_id, language_id: languageMap.uk.language_id, value: "Мій брат їздить на {{answer}}.", answer_value: "мотоциклі", sound_path: "/sounds/transport/sentences/uk/мотоцикл.mp3" },
     { content_id: content[23].content_id, language_id: languageMap.ru.language_id, value: "Мой брат ездит на {{answer}}.", answer_value: "мотоцикле", sound_path: "/sounds/transport/sentences/ru/мотоцикл.mp3" },
 
