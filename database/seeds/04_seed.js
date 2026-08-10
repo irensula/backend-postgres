@@ -16,7 +16,7 @@ exports.seed = async function(knex) {
   const content = await knex('content').insert([
 
     // TRANSPORT
-    { type: "word", image_path: "/images/transport/transport.png", category_id: categories[3].category_id, }, // 79
+    { type: "word", image_path: "/images/transport/transport.png", category_id: categories[3].category_id, }, // 
     { type: "word", image_path: "/images/transport/bicycle.png", category_id: categories[3].category_id, },
     { type: "word", image_path: "/images/transport/car.png", category_id: categories[3].category_id, },
     { type: "word", image_path: "/images/transport/bus.png", category_id: categories[3].category_id, },
@@ -29,7 +29,7 @@ exports.seed = async function(knex) {
     { type: "word", image_path: "/images/transport/road.png", category_id: categories[3].category_id, },
     { type: "word", image_path: "/images/transport/sidewalk.png", category_id: categories[3].category_id, },
     { type: "word", image_path: "/images/transport/crosswalk.png", category_id: categories[3].category_id, },
-    { type: "word", image_path: "/images/transport/traffic_light.png", category_id: categories[3].category_id, }, // 92
+    { type: "word", image_path: "/images/transport/traffic_light.png", category_id: categories[3].category_id, }, // 13
 
     { type: "sentence", image_path: "/images/transport/transport.png", category_id: categories[3].category_id, },
     { type: "sentence", image_path: "/images/transport/bicycle.png", category_id: categories[3].category_id, },
@@ -44,9 +44,9 @@ exports.seed = async function(knex) {
     { type: "sentence", image_path: "/images/transport/road.png", category_id: categories[3].category_id, },
     { type: "sentence", image_path: "/images/transport/sidewalk.png", category_id: categories[3].category_id, },
     { type: "sentence", image_path: "/images/transport/crosswalk.png", category_id: categories[3].category_id, },
-    { type: "sentence", image_path: "/images/transport/traffic_light.png", category_id: categories[3].category_id, }, // 106
+    { type: "sentence", image_path: "/images/transport/traffic_light.png", category_id: categories[3].category_id, }, // 27
 
-    { type: "text", image_path: "/images/texts/transport_image.png", category_id: categories[3].category_id, }, // 107 
+    { type: "text", image_path: "/images/texts/transport_image.png", category_id: categories[3].category_id, }, // 28 
     
   ]).returning('*');
   // 11. CONTENT TRANSLATIONS
@@ -173,7 +173,7 @@ exports.seed = async function(knex) {
     // metro
     { content_id: content[19].content_id, language_id: languageMap.en.language_id, value: "My brother goes by {{answer}}.", answer_value: "metro", sound_path: "/sounds/transport/sentences/en/metro.mp3" },
     { content_id: content[19].content_id, language_id: languageMap.fi.language_id, value: "Veljeni menee {{answer}}.", answer_value: "metrolla", sound_path: "/sounds/transport/sentences/fi/metro.mp3" },
-    { content_id: content[19].content_id, language_id: languageMap.uk.language_id, value: "Мій брат їде {{answer}}.", answer_value: "метро", sound_path: "/sounds/transport/sentences/uk/метро.mp3" },
+    { content_id: content[19].content_id, language_id: languageMap.uk.language_id, value: "Мій брат їде на {{answer}}.", answer_value: "метро", sound_path: "/sounds/transport/sentences/uk/метро.mp3" },
     { content_id: content[19].content_id, language_id: languageMap.ru.language_id, value: "Мой брат ездит на {{answer}}.", answer_value: "метро", sound_path: "/sounds/transport/sentences/ru/метро.mp3" },
 
     // train
@@ -248,7 +248,7 @@ exports.seed = async function(knex) {
     {
       content_id: content[28].content_id,
       language_id: languageMap.uk.language_id,
-      value: "Ми користуємося транспортом щодня. Я їду до школи на велосипеді. Мій тато їде на роботу машиною, а моя мама їде на роботу автобусом. Моя тітка їде на роботу тролейбусом. Мій дядько їде на роботу метро. Іноді моя сім'я подорожує потягом або літаком. Мій дідусь любить подорожувати гелікоптером. Мій брат їздить на мотоциклі. Ми ходимо тротуаром і переходимо дорогу на пішохідному переході. Ми зупиняємося, коли світлофор червоний. Я люблю подорожувати зі своєю сім'єю.",
+      value: "Ми користуємося транспортом щодня. Я їду до школи на велосипеді. Мій тато їде на роботу машиною, а моя мама їде на роботу автобусом. Моя тітка їде на роботу тролейбусом. Мій дядько їде на роботу на метро. Іноді моя сім'я подорожує потягом або літаком. Мій дідусь любить подорожувати гелікоптером. Мій брат їздить на мотоциклі. Ми ходимо тротуаром і переходимо дорогу на пішохідному переході. Ми зупиняємося, коли світлофор червоний. Я люблю подорожувати зі своєю сім'єю.",
       sound_path: "/sounds/transport/text/uk_transport.mp3",
       title: "Транспорт"
     },
