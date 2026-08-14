@@ -345,25 +345,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[11].content_id,
       language_id: languageMap.en.language_id,
-      value: "I have one brother.",
+      value: "I have {{answer}} brother.",
+      answer_value: "one",
       sound_path: "/sounds/numbers/sentences/en/one.mp3"
     },
     {
       content_id: content[11].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Minulla on yksi veli.",
+      value: "Minulla on {{answer}} veli.",
+      answer_value: "yksi",
       sound_path: "/sounds/numbers/sentences/fi/yksi.mp3"
     },
     {
       content_id: content[11].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У мене є один брат.",
+      value: "У мене є {{answer}} брат.",
+      answer_value: "один",
       sound_path: "/sounds/numbers/sentences/uk/один.mp3"
     },
     {
       content_id: content[11].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У меня есть один брат.",
+      value: "У меня есть {{answer}} брат.",
+      answer_value: "один",
       sound_path: "/sounds/numbers/sentences/ru/один.mp3"
     },
 
@@ -371,25 +375,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[12].content_id,
       language_id: languageMap.en.language_id,
-      value: "You have two sisters.",
+      value: "You have {{answer}} sisters.",
+      answer_value: "two",
       sound_path: "/sounds/numbers/sentences/en/two.mp3"
     },
     {
       content_id: content[12].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Sinulla on kaksi siskoa.",
+      value: "Sinulla on {{answer}} siskoa.",
+      answer_value: "kaksi",
       sound_path: "/sounds/numbers/sentences/fi/kaksi.mp3"
     },
     {
       content_id: content[12].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У тебе є дві сестри.",
+      value: "У тебе є {{answer}} сестри.",
+      answer_value: "дві",
       sound_path: "/sounds/numbers/sentences/uk/два.mp3"
     },
     {
       content_id: content[12].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У тебя есть две сестры.",
+      value: "У тебя есть {{answer}} сестры.",
+      answer_value: "две",
       sound_path: "/sounds/numbers/sentences/ru/два.mp3"
     },
 
@@ -397,25 +405,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[13].content_id,
       language_id: languageMap.en.language_id,
-      value: "Mikael has three books.",
+      value: "Mikael has {{answer}} books.",
+      answer_value: "three",
       sound_path: "/sounds/numbers/sentences/en/three.mp3"
     },
     {
       content_id: content[13].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Mikaelilla on kolme kirjaa.",
+      value: "Mikaelilla on {{answer}} kirjaa.",
+      answer_value: "kolme",
       sound_path: "/sounds/numbers/sentences/fi/kolme.mp3"
     },
     {
       content_id: content[13].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У Мікаеля є три книги.",
+      value: "У Мікаеля є {{answer}} книги.",
+      answer_value: "три",
       sound_path: "/sounds/numbers/sentences/uk/три.mp3"
     },
     {
       content_id: content[13].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У Микаэля есть три книги.",
+      value: "У Микаэля есть {{answer}} книги.",
+      answer_value: "три",
       sound_path: "/sounds/numbers/sentences/ru/три.mp3"
     },
 
@@ -423,25 +435,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[14].content_id,
       language_id: languageMap.en.language_id,
-      value: "We have four lessons every day.",
+      value: "We have {{answer}} lessons every day.",
+      answer_value: "four",
       sound_path: "/sounds/numbers/sentences/en/four.mp3"
     },
     {
       content_id: content[14].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Meillä on neljä oppituntia joka päivä.",
+      value: "Meillä on {{answer}} oppituntia joka päivä.",
+      answer_value: "neljä",
       sound_path: "/sounds/numbers/sentences/fi/neljä.mp3"
     },
     {
       content_id: content[14].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У нас щодня чотири уроки.",
+      value: "У нас щодня {{answer}} уроки.",
+      answer_value: "чотири",
       sound_path: "/sounds/numbers/sentences/uk/чотири.mp3"
     },
     {
       content_id: content[14].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У нас каждый день четыре урока.",
+      value: "У нас каждый день {{answer}} урока.",
+      answer_value: "четыре",
       sound_path: "/sounds/numbers/sentences/ru/четыре.mp3"
     },
 
@@ -449,25 +465,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[15].content_id,
       language_id: languageMap.en.language_id,
-      value: "We buy five liters of milk every week.",
+      value: "We buy {{answer}} liters of milk every week.",
+      answer_value: "five",
       sound_path: "/sounds/numbers/sentences/en/five.mp3"
     },
     {
       content_id: content[15].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Ostamme viisi litraa maitoa joka viikko.",
+      value: "Ostamme {{answer}} litraa maitoa joka viikko.",
+      answer_value: "viisi",
       sound_path: "/sounds/numbers/sentences/fi/viisi.mp3"
     },
     {
       content_id: content[15].content_id,
       language_id: languageMap.uk.language_id,
-      value: "Ми купуємо п'ять літрів молока щотижня.",
+      value: "Ми купуємо {{answer}} літрів молока щотижня.",
+      answer_value: "п'ять",
       sound_path: "/sounds/numbers/sentences/uk/п'ять.mp3"
     },
     {
       content_id: content[15].content_id,
       language_id: languageMap.ru.language_id,
-      value: "Мы покупаем пять литров молока каждую неделю.",
+      value: "Мы покупаем {{answer}} литров молока каждую неделю.",
+      answer_value: "пять",
       sound_path: "/sounds/numbers/sentences/ru/пять.mp3"
     },
 
@@ -475,25 +495,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[16].content_id,
       language_id: languageMap.en.language_id,
-      value: "They have six apples.",
+      value: "They have {{answer}} apples.",
+      answer_value: "six",
       sound_path: "/sounds/numbers/sentences/en/six.mp3"
     },
     {
       content_id: content[16].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Heillä on kuusi omenaa.",
+      value: "Heillä on {{answer}} omenaa.",
+      answer_value: "kuusi",
       sound_path: "/sounds/numbers/sentences/fi/kuusi.mp3"
     },
     {
       content_id: content[16].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У них є шість яблук.",
+      value: "У них є {{answer}} яблук.",
+      answer_value: "шість",
       sound_path: "/sounds/numbers/sentences/uk/шість.mp3"
     },
     {
       content_id: content[16].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У них есть шесть яблок.",
+      value: "У них есть {{answer}} яблок.",
+      answer_value: "шесть",
       sound_path: "/sounds/numbers/sentences/ru/шесть.mp3"
     },
 
@@ -501,25 +525,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[17].content_id,
       language_id: languageMap.en.language_id,
-      value: "I have seven notebooks.",
+      value: "I have {{answer}} notebooks.",
+      answer_value: "seven",
       sound_path: "/sounds/numbers/sentences/en/seven.mp3"
     },
     {
       content_id: content[17].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Minulla on seitsemän vihkoa.",
+      value: "Minulla on {{answer}} vihkoa.",
+      answer_value: "seitsemän",
       sound_path: "/sounds/numbers/sentences/fi/seitsemän.mp3"
     },
     {
       content_id: content[17].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У мене є сім зошитів.",
+      value: "У мене є {{answer}} зошитів.",
+      answer_value: "сім",
       sound_path: "/sounds/numbers/sentences/uk/сім.mp3"
     },
     {
       content_id: content[17].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У меня есть семь тетрадей.",
+      value: "У меня есть {{answer}} тетрадей.",
+      answer_value: "семь",
       sound_path: "/sounds/numbers/sentences/ru/семь.mp3"
     },
 
@@ -527,25 +555,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[18].content_id,
       language_id: languageMap.en.language_id,
-      value: "You have eight pens.",
+      value: "You have {{answer}} pens.",
+      answer_value: "eight",
       sound_path: "/sounds/numbers/sentences/en/eight.mp3"
     },
     {
       content_id: content[18].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Sinulla on kahdeksan kynää.",
+      value: "Sinulla on {{answer}} kynää.",
+      answer_value: "kahdeksan",
       sound_path: "/sounds/numbers/sentences/fi/kahdeksan.mp3"
     },
     {
       content_id: content[18].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У тебе є вісім ручок.",
+      value: "У тебе є {{answer}} ручок.",
+      answer_value: "вісім",
       sound_path: "/sounds/numbers/sentences/uk/вісім.mp3"
     },
     {
       content_id: content[18].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У тебя есть восемь ручек.",
+      value: "У тебя есть {{answer}} ручек.",
+      answer_value: "восемь",
       sound_path: "/sounds/numbers/sentences/ru/восемь.mp3"
     },
 
@@ -553,25 +585,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[19].content_id,
       language_id: languageMap.en.language_id,
-      value: "We have nine glasses.",
+      value: "We have {{answer}} glasses.",
+      answer_value: "nine",
       sound_path: "/sounds/numbers/sentences/en/nine.mp3"
     },
     {
       content_id: content[19].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Meillä on yhdeksän lasia.",
+      value: "Meillä on {{answer}} lasia.",
+      answer_value: "yhdeksän",
       sound_path: "/sounds/numbers/sentences/fi/yhdeksän.mp3"
     },
     {
       content_id: content[19].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У нас є дев'ять склянок.",
+      value: "У нас є {{answer}} склянок.",
+      answer_value: "дев'ять",
       sound_path: "/sounds/numbers/sentences/uk/дев'ять.mp3"
     },
     {
       content_id: content[19].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У нас есть девять стаканов.",
+      value: "У нас есть {{answer}} стаканов.",
+      answer_value: "девять",
       sound_path: "/sounds/numbers/sentences/ru/девять.mp3"
     },
 
@@ -579,25 +615,29 @@ exports.seed = async function(knex) {
     {
       content_id: content[20].content_id,
       language_id: languageMap.en.language_id,
-      value: "Emma has ten pencils.",
+      value: "Emma has {{answer}} pencils.",
+      answer_value: "ten",
       sound_path: "/sounds/numbers/sentences/en/ten.mp3"
     },
     {
       content_id: content[20].content_id,
       language_id: languageMap.fi.language_id,
-      value: "Emmalla on kymmenen lyijykynää.",
+      value: "Emmalla on {{answer}} lyijykynää.",
+      answer_value: "kymmenen",
       sound_path: "/sounds/numbers/sentences/fi/kymmenen.mp3"
     },
     {
       content_id: content[20].content_id,
       language_id: languageMap.uk.language_id,
-      value: "У Емми є десять олівців.",
+      value: "У Емми є {{answer}} олівців.",
+      answer_value: "десять",
       sound_path: "/sounds/numbers/sentences/uk/десять.mp3"
     },
     {
       content_id: content[20].content_id,
       language_id: languageMap.ru.language_id,
-      value: "У Эммы есть десять карандашей.",
+      value: "У Эммы есть {{answer}} карандашей.",
+      answer_value: "десять",
       sound_path: "/sounds/numbers/sentences/ru/десять.mp3"
     },
 
