@@ -28,11 +28,14 @@ app.use(express.static(path.join(__dirname, "public")));
 let userschema = require("./schemas/userschema.json");
 let validateSchema = require("./middleware/validate");
 let isAuthenticated = require("./middleware/auth");
+
 // pre-auth routes
 app.use("/avatars", require("./routes/avatarsRouter"));
+
 // auth routes
 app.use("/login", require("./routes/loginRouter"));
 app.use("/register", validateSchema(userschema), require("./routes/registerRouter"));
+
 // app routes
 app.use("/users", isAuthenticated, require("./routes/usersRouter"));
 app.use("/languages", isAuthenticated, require("./routes/languagesRouter"));
@@ -42,6 +45,7 @@ app.use("/progress", isAuthenticated, require("./routes/progressRouter"));
 app.use("/version", require("./routes/versionRouter"));
 app.use("/push-token", isAuthenticated, require("./routes/pushTokenRouter"));
 app.use("/notifications", isAuthenticated, require("./routes/notificationsRouter"));
+
 // public pages
 app.get("/privacy-policy", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "privacy-policy.html"));

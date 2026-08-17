@@ -12,7 +12,7 @@ exports.up = async function(knex) {
   await knex.schema.createTable("avatars", (t) => {
     t.increments("avatar_id").primary();
 
-    t.string("avatar_path").notNullable();
+    t.string("avatar_path").notNullable().unique();
   });
   // 3. LANGUAGES
   await knex.schema.createTable("languages", (t) => {
@@ -27,6 +27,8 @@ exports.up = async function(knex) {
   // 4. CATEGORIES
   await knex.schema.createTable("categories", (t) => {
     t.increments("category_id").primary();
+
+    t.string("slug").notNullable().unique();
 
     t.string("image_path").notNullable();
 
@@ -53,7 +55,7 @@ exports.up = async function(knex) {
     t.string("name", 100).notNullable();
 
     t.unique(["category_id", "language_id"]);
-  });
+});
   // 6. USERS
   await knex.schema.createTable("users", (t) => {
     t.increments("user_id").primary();
@@ -111,7 +113,27 @@ exports.up = async function(knex) {
       "language_id",
     ]);
   });
-  // 8. EXERCISES
+  // 8. USER SESSIONS
+  await knex.schema.createTable("user_sessions", (t) => {
+    t.increments("session_id").primary();
+
+    t.integer("user_id")
+      .notNullable()
+      .references("user_id")
+      .inTable("users")
+      .onDelete("CASCADE");
+
+    t.string("refresh_token_hash").notNullable().unique();
+
+    t.string("device_id");
+
+    t.timestamp("expires_at").notNullable();
+
+    t.timestamp("created_at").defaultTo(knex.fn.now());
+    t.timestamp("last_used_at").nullable();
+    t.timestamp("revoked_at").nullable();
+  });
+  // 9. EXERCISES
   await knex.schema.createTable("exercises", (t) => {
     t.increments("exercise_id").primary();
 
@@ -123,7 +145,7 @@ exports.up = async function(knex) {
 
     t.timestamps(true, true);
   });  
-  // 9. EXERCISES TRANSLATIONS
+  // 10. EXERCISES TRANSLATIONS
   await knex.schema.createTable("exercise_translations", (t) => {
     t.increments("exercise_translation_id").primary();
 
@@ -145,11 +167,13 @@ exports.up = async function(knex) {
 
     t.unique(["exercise_id", "language_id"]);
   });
-  // 10. CONTENT
+  // 11. CONTENT
   await knex.schema.createTable("content", (t) => {
     t.increments("content_id").primary();
 
     t.enu("type", ["word", "sentence", "text"]).notNullable();
+
+    t.string("slug").notNullable();
 
     t.string("image_path");
 
@@ -159,8 +183,10 @@ exports.up = async function(knex) {
       .onDelete("SET NULL");
 
     t.timestamps(true, true);
+
+    t.unique(["category_id", "type", "slug"]);
   });
-  // 11. CONTENT TRANSLATIONS
+  // 12. CONTENT TRANSLATIONS
   await knex.schema.createTable("content_translations", (t) => {
     t.increments("content_translation_id").primary();
 
@@ -188,7 +214,7 @@ exports.up = async function(knex) {
 
     t.unique(["content_id", "language_id"]);
   });
-  // 12. PROGRESS
+  // 13. PROGRESS
   await knex.schema.createTable("progress", (t) => {
     t.increments("progress_id").primary();
 
@@ -220,6 +246,34 @@ exports.up = async function(knex) {
       "exercise_id"
     ]);
   });
+  // 14. USER PUSH TOKENS
+  await knex.schema.createTable("user_push_tokens", (t) => {
+    t.increments("push_id").primary();
+    t.integer("user_id")
+      .notNullable()
+      .references("user_id")
+      .inTable("users")
+      .onDelete("CASCADE");
+    t.string("expo_push_token").notNullable();
+    t.timestamp("created_at").defaultTo(knex.fn.now());
+    t.unique(["user_id", "expo_push_token"]);
+  });
+  // 15. NOTIFICATION LOG
+  await knex.schema.createTable("notification_log", (t) => {
+    t.increments("notification_id").primary();
+    t.integer("user_id")
+      .nullable()
+      .references("user_id")
+      .inTable("users")
+      .onDelete("CASCADE");
+    t.string("type", 50);
+    t.string("title").notNullable();
+    t.text("body").notNullable();
+    t.jsonb("data");
+    t.boolean("read").notNullable().defaultTo(false); // default false
+    t.timestamp("created_at").defaultTo(knex.fn.now());
+    t.timestamp("updated_at").defaultTo(knex.fn.now());
+  })
 };
 
 /**
@@ -228,11 +282,14 @@ exports.up = async function(knex) {
  */
 exports.down = function(knex) {
   return knex.schema
+    .dropTableIfExists("notification_log")
+    .dropTableIfExists("user_push_tokens")
     .dropTableIfExists("progress")
     .dropTableIfExists("content_translations")
     .dropTableIfExists("content")
     .dropTableIfExists("exercise_translations")
     .dropTableIfExists("exercises")
+    .dropTableIfExists("user_sessions")
     .dropTableIfExists("users_languages")
     .dropTableIfExists("users")
     .dropTableIfExists("category_translations")
