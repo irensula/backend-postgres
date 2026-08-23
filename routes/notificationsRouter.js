@@ -4,12 +4,24 @@ const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 const { sendPushNotification } = require("../utils/notifications.js");
 
-// Send notification to all users
-router.post("/all", async (req, res) => {
-  const { title, body } = req.body;
+router.get("/", async (req, res) => {
+  const userId = res.locals.auth.userId;
 
   try {
-    await knex("notification_log").insert({ userID: null, title, body });
+    const notificationLog = await knex("notification_log").select("*");
+    res.json(notificationLog);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to unregister expo_push_token" });
+  }
+});
+
+// Send notification to all users
+router.post("/all", async (req, res) => {
+  const { title, body, type } = req.body;
+
+  try {
+    await knex("notification_log").insert({ user_id: null, title, body, type });
 
     const tokens = await knex("user_push_tokens").select("expo_push_token");
 
@@ -20,7 +32,7 @@ router.post("/all", async (req, res) => {
     await Promise.all(
       tokens.map(async (token) => {
         try {
-          await sendPushNotification(token.expo_push_token, title, body);
+          await sendPushNotification(token.expo_push_token, title, body, type);
         } catch (err) {
           console.error("Failed to send to token:", token.expo_push_token, err);
         }
@@ -34,19 +46,24 @@ router.post("/all", async (req, res) => {
   }
 });
 
-router.post("/:userID", async (req, res) => {
-  const { userID } = req.params;
-  const { title, body } = req.body;
+router.post("/:user_id", async (req, res) => {
+  const { user_id } = req.params;
+  const { title, body, type } = req.body;
 
   try {
-    const [notificationID] = await knex("notification_log").insert({
-      userID,
-      title,
-      body,
-    });
+    const [notification] = await knex("notification_log")
+      .insert({
+        user_id,
+        title,
+        body,
+        type,
+      })
+      .returning("notification_id");
+
+    const notification_id = notification.notification_id;
 
     const tokens = await knex("user_push_tokens")
-      .where({ userID })
+      .where({ user_id })
       .select("expo_push_token");
 
     if (!tokens.length) {
@@ -61,39 +78,20 @@ router.post("/:userID", async (req, res) => {
           token.expo_push_token,
           title,
           body,
-          notificationID
+          type,
+          notification_id
         );
       })
     );
 
-    res.json({ success: true, sent: tokens.length });
+    res.json({ 
+      success: true,
+      sent: tokens.length,
+      notification_id
+   });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to send notification" });
-  }
-});
-
-router.put("/:userId/mark-read", async (req, res) => {
-  const { userId } = req.params;
-  const { notificationIds } = req.body;
-
-  if (!Array.isArray(notificationIds) || notificationIds.length === 0) {
-    return res.status(400).json({ error: "NotificationIds required" });
-  }
-
-  try {
-    await knex("notification_log")
-      .where({ userID: userId })
-      .whereIn("notificationID", notificationIds)
-      .update({ read: true, updated_at: knex.fn.now() });
-
-    res.json({
-      message: "Notifications are marked as read",
-      count: notificationIds.length,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to update notification" });
   }
 });
 

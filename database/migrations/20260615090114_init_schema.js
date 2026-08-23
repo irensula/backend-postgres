@@ -270,9 +270,7 @@ exports.up = async function(knex) {
     t.string("title").notNullable();
     t.text("body").notNullable();
     t.jsonb("data");
-    t.boolean("read").notNullable().defaultTo(false); // default false
     t.timestamp("created_at").defaultTo(knex.fn.now());
-    t.timestamp("updated_at").defaultTo(knex.fn.now());
   })
 };
 
