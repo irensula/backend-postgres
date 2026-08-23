@@ -2,7 +2,7 @@
 const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 
-async function sendPushNotification(expoPushToken, title, body, notificationID) {
+async function sendPushNotification(expoPushToken, title, body, type, notification_id) {
   // Validate the token format
   if (
     !expoPushToken ||
@@ -19,7 +19,10 @@ async function sendPushNotification(expoPushToken, title, body, notificationID) 
     sound: "default",
     title,
     body,
-    data: { notificationID },
+    data: { 
+      type,
+      notification_id,
+     },
   };
 
   // Send the notification
@@ -37,6 +40,12 @@ async function sendPushNotification(expoPushToken, title, body, notificationID) 
 
     const data = await response.json();
     console.log("Expo's response:", data);
+
+    if (!response.ok) {
+      throw new Error(
+        `Expo Push API error: ${response.status} ${JSON.stringify(data)}`
+      );
+    }
 
     // Delete invalid tokens
     const error =

@@ -13,7 +13,7 @@ exports.seed = async function(knex) {
     .insert([
         {   
             user_id: user.user_id, 
-            expo_push_token: "expo_push_token_123"
+            expo_push_token: "ExponentPushToken[111]"
         },
     ])
     .onConflict(["user_id", "expo_push_token"])

@@ -1,0 +1,8 @@
+POST http://localhost:3001/push-token/register HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJhdmF0YXJfaWQiOjEsImF2YXRhcl9wYXRoIjoiL2ltYWdlcy9hdmF0YXJzL2RvZy5wbmciLCJpYXQiOjE3ODY5Nzk2NzcsImV4cCI6MTc4OTU3MTY3N30.EveyXjZQcZdjYlTxruV-hynjmWFsVselwe5hazKy0K0
+
+{
+    "user_id": 1,
+    "expo_push_token": "ExponentPushToken[fakeToken111]"
+}

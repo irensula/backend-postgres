@@ -3,10 +3,22 @@ let router = express.Router();
 const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 
+router.get("/", async (req, res) => {
+  const userId = res.locals.auth.userId;
+
+  try {
+    const pushTokens = await knex("user_push_tokens").select("*");
+    res.json(pushTokens);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to unregister expo_push_token" });
+  }
+});
+
 router.post("/register", async (req, res) => {
   try {
     const { expo_push_token } = req.body;
-    const userID = res.locals.auth.userId;
+    const user_id = res.locals.auth.userId;
 
     console.log("Received token from frontend:", expo_push_token);
 
@@ -15,11 +27,9 @@ router.post("/register", async (req, res) => {
     }
 
     await knex("user_push_tokens")
-      .insert({ userID: userID, expo_push_token })
-      .onConflict(["userID", "expo_push_token"])
+      .insert({ user_id: user_id, expo_push_token })
+      .onConflict(["user_id", "expo_push_token"])
       .ignore();
-
-    console.log("Token saved to database for userID:", userID || 2);
 
     res.json({ success: true });
   } catch (err) {

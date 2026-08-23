@@ -24,8 +24,7 @@ exports.seed = async function(knex) {
                 type: "system",
                 title: "Update",
                 body: "The app has been updated. Please, update your app.", 
-                data: JSON.stringify({ version: "1.2.0" }),
-                read: false,
+                data: JSON.stringify({ version: "1.2.0" })
             },
         ]);
 };
