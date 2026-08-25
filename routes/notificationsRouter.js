@@ -21,7 +21,16 @@ router.post("/all", async (req, res) => {
   const { title, body, type } = req.body;
 
   try {
-    await knex("notification_log").insert({ user_id: null, title, body, type });
+    const [notification] = await knex("notification_log")
+      .insert({
+        user_id: null,
+        title,
+        body,
+        type,
+      })
+      .returning("notification_id");
+
+    const notification_id = notification.notification_id;
 
     const tokens = await knex("user_push_tokens").select("expo_push_token");
 
@@ -32,14 +41,24 @@ router.post("/all", async (req, res) => {
     await Promise.all(
       tokens.map(async (token) => {
         try {
-          await sendPushNotification(token.expo_push_token, title, body, type);
+          await sendPushNotification(
+            token.expo_push_token,
+            title,
+            body,
+            type,
+            notification_id
+          );
         } catch (err) {
-          console.error("Failed to send to token:", token.expo_push_token, err);
+          console.error(
+            "Failed to send to token:",
+            token.expo_push_token,
+            err
+          );
         }
       })
     );
 
-    res.json({ success: true, sent: tokens.length });
+    res.json({ success: true, sent: tokens.length, notification_id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to send notifications" });

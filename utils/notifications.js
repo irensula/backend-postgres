@@ -19,6 +19,7 @@ async function sendPushNotification(expoPushToken, title, body, type, notificati
     sound: "default",
     title,
     body,
+    channelId: "default",
     data: { 
       type,
       notification_id,
