@@ -1,9 +1,9 @@
-POST http://localhost:3001/notifications/1 HTTP/1.1
+POST http://localhost:3001/notifications/9 HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJhdmF0YXJfaWQiOjEsImF2YXRhcl9wYXRoIjoiL2ltYWdlcy9hdmF0YXJzL2RvZy5wbmciLCJpYXQiOjE3ODY5Nzk2NzcsImV4cCI6MTc4OTU3MTY3N30.EveyXjZQcZdjYlTxruV-hynjmWFsVselwe5hazKy0K0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXNlcm5hbWUiOiJNYXJ5IiwiZW1haWwiOiJtYXJ5QGdtYWlsLmNvbSIsImF2YXRhcl9pZCI6MiwiYXZhdGFyX3BhdGgiOiIvaW1hZ2VzL2F2YXRhcnMvY2F0LnBuZyIsImlhdCI6MTc4Nzg0NzAwNiwiZXhwIjoxNzkwNDM5MDA2fQ.L74XXAD-0fC2DFJnhv0o4PVrnKBJot5RURnzrwG2VdQ
 
 {
   "title": "Hi!",
-  "body": "New topic was added 9!",
+  "body": "New topic was added 2!",
   "type": "new_content"
 }

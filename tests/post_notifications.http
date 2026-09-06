@@ -4,6 +4,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 
 {
   "title": "Hello!",
-  "body": "This is a test notification for all users 1",
+  "body": "New topic 2 was added!",
   "type": "system"
 }
