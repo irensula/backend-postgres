@@ -21,15 +21,20 @@ router.post("/register", async (req, res) => {
     const user_id = res.locals.auth.userId;
 
     console.log("Received token from frontend:", expo_push_token);
+    console.log("User ID:", user_id);
 
     if (!expo_push_token) {
       return res.status(400).json({ error: "No token provided" });
     }
 
     await knex("user_push_tokens")
-      .insert({ user_id: user_id, expo_push_token })
-      .onConflict(["user_id", "expo_push_token"])
-      .ignore();
+      .where({ expo_push_token })
+      .del();
+
+    await knex("user_push_tokens").insert({ 
+        user_id,
+        expo_push_token
+    });
 
     res.json({ success: true });
   } catch (err) {

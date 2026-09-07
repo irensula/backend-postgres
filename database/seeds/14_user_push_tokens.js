@@ -16,6 +16,6 @@ exports.seed = async function(knex) {
             expo_push_token: "ExponentPushToken[111]"
         },
     ])
-    .onConflict(["user_id", "expo_push_token"])
+    .onConflict("expo_push_token")
     .ignore();
 };

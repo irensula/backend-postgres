@@ -256,7 +256,7 @@ exports.up = async function(knex) {
       .onDelete("CASCADE");
     t.string("expo_push_token").notNullable();
     t.timestamp("created_at").defaultTo(knex.fn.now());
-    t.unique(["user_id", "expo_push_token"]);
+    t.unique("expo_push_token");
   });
   // 15. NOTIFICATION LOG
   await knex.schema.createTable("notification_log", (t) => {
