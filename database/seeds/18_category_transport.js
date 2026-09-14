@@ -48,7 +48,7 @@ exports.seed = async function(knex) {
     { type: "sentence", slug: "road", image_path: "/images/transport/road.png", category_id: categoryMap.transport },
     { type: "sentence", slug: "sidewalk", image_path: "/images/transport/sidewalk.png", category_id: categoryMap.transport },
     { type: "sentence", slug: "crosswalk", image_path: "/images/transport/crosswalk.png", category_id: categoryMap.transport },
-    { type: "sentence", slug: "traffic light", image_path: "/images/transport/traffic light.png", category_id: categoryMap.transport },
+    { type: "sentence", slug: "traffic light", image_path: "/images/transport/traffic_light.png", category_id: categoryMap.transport },
 
     // TEXT
     { type: "text", slug: "transport", image_path: "/images/texts/transport_image.png", category_id: categoryMap.transport },

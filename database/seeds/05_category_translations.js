@@ -134,6 +134,116 @@ exports.seed = async function(knex) {
         language_id: languageMap.ru,
         name: "Числа",
       },
+      
+      // Colors
+      {
+        category_id: categoryMap.colors,
+        language_id: languageMap.en,
+        name: "Colors",
+      },
+      {
+        category_id: categoryMap.colors,
+        language_id: languageMap.fi,
+        name: "Värit",
+      },
+      {
+        category_id: categoryMap.colors,
+        language_id: languageMap.uk,
+        name: "Кольори",
+      },
+      {
+        category_id: categoryMap.colors,
+        language_id: languageMap.ru,
+        name: "Цвета",
+      },
+
+      // Animals
+      {
+        category_id: categoryMap.animals,
+        language_id: languageMap.en,
+        name: "Animals",
+      },
+      {
+        category_id: categoryMap.animals,
+        language_id: languageMap.fi,
+        name: "Eläimet",
+      },
+      {
+        category_id: categoryMap.animals,
+        language_id: languageMap.uk,
+        name: "Тварини",
+      },
+      {
+        category_id: categoryMap.animals,
+        language_id: languageMap.ru,
+        name: "Животные",
+      },
+
+      // Days
+      {
+        category_id: categoryMap.days,
+        language_id: languageMap.en,
+        name: "Days",
+      },
+      {
+        category_id: categoryMap.days,
+        language_id: languageMap.fi,
+        name: "Päivät",
+      },
+      {
+        category_id: categoryMap.days,
+        language_id: languageMap.uk,
+        name: "Дні",
+      },
+      {
+        category_id: categoryMap.days,
+        language_id: languageMap.ru,
+        name: "Дни",
+      },
+
+      // Months
+      {
+        category_id: categoryMap.months,
+        language_id: languageMap.en,
+        name: "Months",
+      },
+      {
+        category_id: categoryMap.months,
+        language_id: languageMap.fi,
+        name: "Kuukaudet",
+      },
+      {
+        category_id: categoryMap.months,
+        language_id: languageMap.uk,
+        name: "Місяці",
+      },
+      {
+        category_id: categoryMap.months,
+        language_id: languageMap.ru,
+        name: "Месяцы",
+      },
+
+      // Nature
+      {
+        category_id: categoryMap.nature,
+        language_id: languageMap.en,
+        name: "Nature",
+      },
+      {
+        category_id: categoryMap.nature,
+        language_id: languageMap.fi,
+        name: "Luonto",
+      },
+      {
+        category_id: categoryMap.nature,
+        language_id: languageMap.uk,
+        name: "Природа",
+      },
+      {
+        category_id: categoryMap.nature,
+        language_id: languageMap.ru,
+        name: "Природа",
+      }
     ])
     .onConflict(["category_id", "language_id"])
     .merge(["name"]);
