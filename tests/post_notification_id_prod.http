@@ -1,0 +1,9 @@
+POST https://study-languages.up.railway.app/notifications/33 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hbWUiOiJJcmVuIiwiZW1haWwiOiJpcmVuc3VsYTE5QGdtYWlsLmNvbSIsImF2YXRhcl9pZCI6MSwiYXZhdGFyX3BhdGgiOiIvaW1hZ2VzL2F2YXRhcnMvZG9nLnBuZyIsImlhdCI6MTc4OTM3NTg0MSwiZXhwIjoxNzkxOTY3ODQxfQ.SDniikdf7_0OjaPwPFUCvJX1A9bHNFYVkZ9qC0z8bfE
+
+{
+  "title": "Hi!",
+  "body": "Привет Баби!",
+  "type": "new_content"
+}

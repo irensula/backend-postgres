@@ -39,8 +39,11 @@ app.use("/register", validateSchema(userschema), require("./routes/registerRoute
 // app routes
 app.use("/users", isAuthenticated, require("./routes/usersRouter"));
 app.use("/languages", isAuthenticated, require("./routes/languagesRouter"));
+app.use("/exercises", isAuthenticated, require("./routes/exercisesRouter"));
 app.use("/courses", isAuthenticated, require("./routes/coursesRouter"));
 app.use("/categories", isAuthenticated, require("./routes/categoriesRouter"));
+app.use("/words", isAuthenticated, require("./routes/wordsRouter"));
+app.use("/sentences", isAuthenticated, require("./routes/sentencesRouter"));
 app.use("/progress", isAuthenticated, require("./routes/progressRouter"));
 app.use("/version", require("./routes/versionRouter"));
 app.use("/push-token", isAuthenticated, require("./routes/pushTokenRouter"));

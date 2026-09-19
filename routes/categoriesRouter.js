@@ -2,7 +2,23 @@ let express = require("express");
 let router = express.Router();
 const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
-const bcrypt = require("bcryptjs");
+
+router.get('/', async(req, res) => {
+  try {
+      const categories = await knex("categories")
+        .join('category_translations', 'category_translations.category_id', 'categories.category_id')
+        .join('languages', 'languages.language_id', 'category_translations.language_id')
+        .select(
+            'categories.*',
+            'languages.name as language',
+            'category_translations.name as translation',
+        )
+        res.json(categories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      res.status(500).json({ error: "Failed to load categories" });
+    }
+});
 
 router.get('/:courseId', async(req, res) => {
   try {
