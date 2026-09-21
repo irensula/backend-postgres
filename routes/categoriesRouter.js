@@ -104,4 +104,45 @@ router.get('/:courseId', async(req, res) => {
   }
 });
 
+router.get('/:categoryId/content', async(req, res) => {
+   try {
+        const categoryId = Number(req.params.categoryId);
+
+        if (!Number.isInteger(categoryId)) {
+            return res.status(400).json({
+                error: 'Invalid category ID',
+            });
+        }
+
+        const content = await knex('content')
+            .where('category_id', categoryId)
+            .orderBy('type')
+            .orderBy('content_id', 'asc');
+
+        const contentIds = content.map(item => item.content_id);
+
+        const translations = contentIds.length
+            ? await knex('content_translations')
+                .join('languages', 'languages.language_id', 'content_translations.language_id')
+                .whereIn('content_id', contentIds)
+                .select('content_translations.*', 'languages.code as language_code')
+                .orderBy('content_translations.language_id')
+            : [];
+
+        const result = content.map(item => ({
+            ...item,
+            translations: translations.filter(
+                translation => translation.content_id === item.content_id
+            ),
+        }));
+
+        return res.json(result);
+    } catch (error) {
+        console.error('Error fetching category content:', error);
+        return res.status(500).json({
+            error: 'Failed to fetch category content',
+        });
+    }
+});
+
 module.exports = router;

@@ -44,6 +44,7 @@ app.use("/courses", isAuthenticated, require("./routes/coursesRouter"));
 app.use("/categories", isAuthenticated, require("./routes/categoriesRouter"));
 app.use("/words", isAuthenticated, require("./routes/wordsRouter"));
 app.use("/sentences", isAuthenticated, require("./routes/sentencesRouter"));
+app.use("/texts", isAuthenticated, require("./routes/textsRouter"));
 app.use("/progress", isAuthenticated, require("./routes/progressRouter"));
 app.use("/version", require("./routes/versionRouter"));
 app.use("/push-token", isAuthenticated, require("./routes/pushTokenRouter"));
