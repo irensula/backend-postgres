@@ -588,7 +588,7 @@ exports.seed = async function(knex) {
       language_id: languageMap.ru,
       value: "{{answer}} живёт на дереве.",
       answer_value: "Белка",
-      sound_path: "/sounds/animals/sentences/ru/Белка.mp3"
+      sound_path: "/sounds/animals/sentences/ru/белка.mp3"
     },
 
     // sentence 8

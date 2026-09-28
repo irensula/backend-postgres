@@ -4,6 +4,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcm5hb
 
 {
   "title": "Hi!",
-  "body": "This is a test notification 4Langs to all users!",
+  "body": "New topic Animals was added!",
   "type": "new_content"
 }

@@ -271,7 +271,24 @@ exports.up = async function(knex) {
     t.text("body").notNullable();
     t.jsonb("data");
     t.timestamp("created_at").defaultTo(knex.fn.now());
-  })
+  });
+  // 16. NOTIFICATIONS USER STATUSES
+  await knex.schema.createTable("notification_user_status", (t) => {
+    t.increments("notification_user_status_id").primary();
+    t.integer("user_id")
+      .nullable()
+      .references("user_id")
+      .inTable("users")
+      .onDelete("CASCADE");
+    t.integer("notification_id")
+      .nullable()
+      .references("notification_id")
+      .inTable("notification_log")
+      .onDelete("CASCADE");
+    t.boolean("read").notNullable().defaultTo(false);
+    t.boolean("hidden").notNullable().defaultTo(false);
+    t.unique(["user_id", "notification_id"]);
+  });
 };
 
 /**
@@ -280,6 +297,7 @@ exports.up = async function(knex) {
  */
 exports.down = function(knex) {
   return knex.schema
+    .dropTableIfExists("notification_user_status")
     .dropTableIfExists("notification_log")
     .dropTableIfExists("user_push_tokens")
     .dropTableIfExists("progress")
