@@ -16,6 +16,10 @@ console.log("DB_CLIENT:", process.env.DB_CLIENT);
 console.log("DATABASE_URL exists:", !!process.env.DATABASE_URL);
 console.log("DB_HOST:", process.env.DB_HOST);
 
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+console.log("RESEND_API_KEY exists:", !!RESEND_API_KEY);
+console.log("RESEND_API_KEY length:", RESEND_API_KEY?.length);
+
 const DATABASE_OPTIONS = {
   client: process.env.DB_CLIENT,
   connection: process.env.DATABASE_URL
