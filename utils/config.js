@@ -7,18 +7,13 @@ const envFile =
 console.log("Loading env file:", envFile);
 dotenv.config({ path: envFile });
 
-console.log("NODE_ENV:", process.env.NODE_ENV);
-
 const PORT = process.env.PORT;
 const SECRET = process.env.SECRET;
 
-console.log("DB_CLIENT:", process.env.DB_CLIENT);
+console.log("NODE_ENV:", process.env.NODE_ENV);
 console.log("DATABASE_URL exists:", !!process.env.DATABASE_URL);
-console.log("DB_HOST:", process.env.DB_HOST);
-
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
-console.log("RESEND_API_KEY exists:", !!RESEND_API_KEY);
-console.log("RESEND_API_KEY length:", RESEND_API_KEY?.length);
+console.log("RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
+console.log("RESEND_API_KEY length:", process.env.RESEND_API_KEY?.length);
 
 const DATABASE_OPTIONS = {
   client: process.env.DB_CLIENT,
