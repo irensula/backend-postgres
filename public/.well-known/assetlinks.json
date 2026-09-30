@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.irensula.opetuspeliapp",
+      "sha256_cert_fingerprints": [
+        "63:9C:E4:7B:88:39:2B:D0:89:5C:03:13:E7:C4:AC:43:B5:DD:A4:04:8B:3F:D2:F4:85:20:B7:9B:9A:85:BB:5C"
+      ]
+    }
+  }
+]

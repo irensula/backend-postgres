@@ -249,45 +249,76 @@ exports.up = async function(knex) {
   // 14. USER PUSH TOKENS
   await knex.schema.createTable("user_push_tokens", (t) => {
     t.increments("push_id").primary();
+
     t.integer("user_id")
       .notNullable()
       .references("user_id")
       .inTable("users")
       .onDelete("CASCADE");
+    
     t.string("expo_push_token").notNullable();
+    
     t.timestamp("created_at").defaultTo(knex.fn.now());
+    
     t.unique("expo_push_token");
   });
   // 15. NOTIFICATION LOG
   await knex.schema.createTable("notification_log", (t) => {
     t.increments("notification_id").primary();
+
     t.integer("user_id")
       .nullable()
       .references("user_id")
       .inTable("users")
       .onDelete("CASCADE");
+
     t.string("type", 50);
+
     t.string("title").notNullable();
+
     t.text("body").notNullable();
+
     t.jsonb("data");
+
     t.timestamp("created_at").defaultTo(knex.fn.now());
   });
   // 16. NOTIFICATIONS USER STATUSES
   await knex.schema.createTable("notification_user_status", (t) => {
     t.increments("notification_user_status_id").primary();
+
     t.integer("user_id")
       .nullable()
       .references("user_id")
       .inTable("users")
       .onDelete("CASCADE");
+
     t.integer("notification_id")
       .nullable()
       .references("notification_id")
       .inTable("notification_log")
       .onDelete("CASCADE");
+
     t.boolean("read").notNullable().defaultTo(false);
+
     t.boolean("hidden").notNullable().defaultTo(false);
+
     t.unique(["user_id", "notification_id"]);
+  });
+  // 17. RESET PASSWORD
+  await knex.schema.createTable("password_reset_tokens", (t) => {
+    t.increments("password_reset_token_id").primary();
+
+    t.integer("user_id")
+      .nullable()
+      .references("user_id")
+      .inTable("users")
+      .onDelete("CASCADE");
+
+    t.string('token_hash', 255).notNullable().unique();
+
+    t.timestamp('expires_at').notNullable();
+    
+    t.timestamp('created_at').defaultTo(knex.fn.now());
   });
 };
 
@@ -297,6 +328,7 @@ exports.up = async function(knex) {
  */
 exports.down = function(knex) {
   return knex.schema
+    .dropTableIfExists("password_reset_tokens")
     .dropTableIfExists("notification_user_status")
     .dropTableIfExists("notification_log")
     .dropTableIfExists("user_push_tokens")

@@ -49,6 +49,7 @@ app.use("/progress", isAuthenticated, require("./routes/progressRouter"));
 app.use("/version", require("./routes/versionRouter"));
 app.use("/push-token", isAuthenticated, require("./routes/pushTokenRouter"));
 app.use("/notifications", isAuthenticated, require("./routes/notificationsRouter"));
+app.use("/password", require("./routes/passwordRouter"));
 
 // public pages
 app.get("/privacy-policy", (req, res) => {
