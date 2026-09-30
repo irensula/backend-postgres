@@ -1,13 +1,8 @@
 const { Resend } = require("resend");
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 const sendPasswordResetEmail = async (email, resetUrl) => {
-    console.log(
-        "RESEND_API_KEY at email function:",
-        !!process.env.RESEND_API_KEY
-    );
-
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
     const { data, error } = await resend.emails.send({
         from: "4Langs <onboarding@resend.dev>",
         to: email,
