@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 
 const config = require("../utils/config");
-const options = config.DATABASE_OPTIONS;
 const knex = require('../knex');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -14,7 +13,7 @@ router.post("/", async (req, res, next) => {
     const dbUsers = await knex("users")
       .select("users.*", "avatars.avatar_path")
       .leftJoin("avatars", "users.avatar_id", "avatars.avatar_id")
-      .where("email", "=", user.email)
+      .where("email", "=", user.email?.trim().toLowerCase())
 
       if (dbUsers.length === 0) {
         return res.status(401).json({ error: "Invalid credentials" });
