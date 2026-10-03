@@ -22,7 +22,7 @@ const sendPasswordResetEmail = async (email, resetUrl) => {
                 <div style="max-width: 600px;">
                     
                 <div style="width:100%; background-color: #8DD54F; display: flex; justify-content: flex-end; align-content: center;">
-                        <img src="https://study-languages.up.railway.app/assets/icon.png" style="width: 100px; height: 100px; border-radius: 15px; margin: 10px" />
+                        <img src="https://study-languages.up.railway.app/public/icon.png" style="width: 100px; height: 100px; border-radius: 15px; margin: 10px" />
                     </div>
                 
                     <h2 style="font-size: 25px;">Hello,</h2>
