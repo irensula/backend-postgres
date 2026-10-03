@@ -4,23 +4,23 @@ const config = require("../utils/config");
 const knex = require("knex")(config.DATABASE_OPTIONS);
 const { sendPushNotification } = require("../utils/notifications.js");
 
-// GET NOTIFICATIONS FOR CURRENT USER
+// GET NOTIFICATION LOG
 router.get("/", async (req, res) => {
-  try {
-    const userId = res.locals.auth.userId;
+  const userId = res.locals.auth.userId;
 
+  try {
     const notifications = await knex("notification_log as n")
       .leftJoin("notification_user_status as s", function () {
-        this.on("s.notification_id", "=", "n.notification_id")
-          .andOn("s.user_id", "=", knex.raw("?", [userId]));
+        this.on("s.notification_id", "=", "n.notification_id"
+        ).andOn("s.user_id", "=", knex.raw("?", [userId]));
       })
       .where(function () {
-        this.whereNull("n.user_id")
-          .orWhere("n.user_id", userId);
+        this.where("n.user_id", userId)
+          .orWhereNull("n.user_id");
       })
-      .andWhere(function () {
-        this.whereNull("s.hidden")
-          .orWhere("s.hidden", false);
+      .where(function () {
+        this.where("s.hidden", false)
+          .orWhereNull("s.hidden");
       })
       .select(
         "n.notification_id",
@@ -35,11 +35,9 @@ router.get("/", async (req, res) => {
       .orderBy("n.created_at", "desc");
 
     res.json(notifications);
-  } catch (err) {
-    console.error("Get notifications error:", err);
-    res.status(500).json({
-      error: "Failed to fetch notifications",
-    });
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    res.status(500).json({ error: "Failed to load notifications" });
   }
 });
 
@@ -59,15 +57,14 @@ router.post("/all", async (req, res) => {
 
     const notification_id = notification.notification_id;
 
-    const tokens = await knex("user_push_tokens").select("user_id", "expo_push_token");
+    // 2. Get all users
+    const users = await knex("users").select("user_id");
 
-    if (!tokens.length) {
-      return res.status(404).json({ message: "No push tokens found" });
-    }
+    console.log("USERS:", users);
 
-    // Create individual status for every user
-    const statuses = tokens.map((token) => ({
-      user_id: token.user_id,
+    // 3. Create 1 status per user
+    const statuses = users.map((user) => ({
+      user_id: user.user_id,
       notification_id,
       read: false,
       hidden: false,
@@ -75,6 +72,15 @@ router.post("/all", async (req, res) => {
 
     await knex("notification_user_status").insert(statuses);
 
+    // 4. Get all push tokens
+    const tokens = await knex("user_push_tokens")
+      .select("user_id", "expo_push_token");
+
+    if (!tokens.length) {
+      return res.status(404).json({ message: "No push tokens found" });
+    }
+
+    // 5. Send push to every device/token
     await Promise.all(
       tokens.map(async (token) => {
         try {
@@ -86,18 +92,14 @@ router.post("/all", async (req, res) => {
             notification_id
           );
         } catch (err) {
-          console.error(
-            "Failed to send to token:",
-            token.expo_push_token,
-            err
-          );
+          console.error("Failed to send to token:", token.expo_push_token, err);
         }
       })
     );
 
     res.json({ success: true, sent: tokens.length, notification_id });
   } catch (err) {
-    console.error(err);
+    console.error("Send notification to all error:", err);
     res.status(500).json({ error: "Failed to send notifications" });
   }
 });
@@ -107,6 +109,7 @@ router.post("/:user_id", async (req, res) => {
   const { title, body, type } = req.body;
 
   try {
+    // 1. Create notification
     const [notification] = await knex("notification_log")
       .insert({
         user_id,
@@ -117,7 +120,8 @@ router.post("/:user_id", async (req, res) => {
       .returning("notification_id");
 
     const notification_id = notification.notification_id;
-
+    
+    // 2. Create user status
     await knex("notification_user_status").insert({
       user_id,
       notification_id,
@@ -125,35 +129,44 @@ router.post("/:user_id", async (req, res) => {
       hidden: false,
     });
 
+    // 3. Get all user's push tokens
     const tokens = await knex("user_push_tokens")
       .where({ user_id })
       .select("expo_push_token");
 
     if (!tokens.length) {
-      return res
-        .status(404)
-        .json({ message: "No push tokens found for this user" });
+      return res.status(404).json({ 
+        message: "No push tokens found for this user" 
+      });
     }
 
+    // 4. Send notification to all user's desices
+    let sent = 0;
     await Promise.all(
-      tokens.map(async (token) => {
-        await sendPushNotification(
-          token.expo_push_token,
-          title,
-          body,
-          type,
-          notification_id
-        );
+      tokens.map(async ({ expo_push_token }) => {
+        try {
+          await sendPushNotification(
+            expo_push_token,
+            title,
+            body,
+            type,
+            notification_id
+          );
+          sent++;
+        } catch (err) {
+          console.error("Failed to send to token:", expo_push_token, err);
+        }
       })
     );
 
     res.json({ 
       success: true,
-      sent: tokens.length,
+      sent,
+      tokens: tokens.length,
       notification_id
    });
   } catch (err) {
-    console.error(err);
+    console.error("Send notification error:", err);
     res.status(500).json({ error: "Failed to send notification" });
   }
 });
@@ -248,18 +261,28 @@ router.patch("/:notificationId/read", async (req, res) => {
     const userId = res.locals.auth.userId;
     const { notificationId } = req.params;
 
-    const updatedRows = await knex("notification_user_status")
+    const existingStatus = await knex("notification_user_status")
       .where({
         user_id: userId,
         notification_id: notificationId,
       })
-      .update({
-        read: true,
-      });
+      .first();
 
-    if (updatedRows === 0) {
-      return res.status(404).json({
-        error: "Notification not found",
+    if (existingStatus) {
+      await knex("notification_user_status")
+        .where({
+          user_id: userId,
+          notification_id: notificationId,
+        })
+        .update({
+          read: true,
+        });
+    } else {
+      await knex("notification_user_status").insert({
+        user_id: userId,
+        notification_id: notificationId,
+        read: true,
+        hidden: false,
       });
     }
 

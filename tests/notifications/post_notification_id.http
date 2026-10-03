@@ -1,9 +1,9 @@
-POST http://localhost:3001/notifications/1 HTTP/1.1
+POST http://localhost:3001/notifications/3 HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJhdmF0YXJfaWQiOjEsImF2YXRhcl9wYXRoIjoiL2ltYWdlcy9hdmF0YXJzL2RvZy5wbmciLCJpYXQiOjE3OTA1ODEzMTAsImV4cCI6MTc5MzE3MzMxMH0.uZ8WoNjPUefv8mTaE0DcR0LdpVRUtt3GqES1tw4NGGY
 
 {
   "title": "Hi!",
-  "body": "New topic was added 3 by id!",
+  "body": "New topic was added 12 by id!",
   "type": "new_content"
 }

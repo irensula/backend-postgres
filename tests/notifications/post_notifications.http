@@ -4,6 +4,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 
 {
   "title": "Hello!",
-  "body": "New topic was added 5!",
+  "body": "New topic was added 4!",
   "type": "system"
 }
