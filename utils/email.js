@@ -22,12 +22,12 @@ const sendPasswordResetEmail = async (email, resetUrl) => {
                 <div style="max-width: 600px;">
                     
                 <div style="width:100%; background-color: #8DD54F; display: flex; justify-content: flex-end; align-content: center;">
-                        <img src="https://study-languages.up.railway.app/public/icon.png" style="width: 100px; height: 100px; border-radius: 15px; margin: 10px" />
+                        <img src="https://study-languages.up.railway.app/icon.png" style="width: 100px; height: 100px; border-radius: 15px; margin: 10px" />
                     </div>
                 
                     <h2 style="font-size: 25px;">Hello,</h2>
 
-                    <p>You recently requested a password reset for your 4Langs account. Click the link below to reset your password. Click on the link below to reset your password.</p>
+                    <p>You recently requested a password reset for your 4Langs account. Click on the link below to reset your password.</p>
 
                     <p>
                         <a href="${resetUrl}">Reset password</a>
