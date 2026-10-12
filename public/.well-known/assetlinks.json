@@ -7,7 +7,8 @@
       "namespace": "android_app",
       "package_name": "com.irensula.opetuspeliapp",
       "sha256_cert_fingerprints": [
-        "63:9C:E4:7B:88:39:2B:D0:89:5C:03:13:E7:C4:AC:43:B5:DD:A4:04:8B:3F:D2:F4:85:20:B7:9B:9A:85:BB:5C"
+        "63:9C:E4:7B:88:39:2B:D0:89:5C:03:13:E7:C4:AC:43:B5:DD:A4:04:8B:3F:D2:F4:85:20:B7:9B:9A:85:BB:5C",
+        "E6:DE:DF:4A:86:A1:3A:AA:85:2F:24:13:5B:9C:89:F7:D6:CF:F8:38:BB:15:73:F7:59:79:22:39:05:DF:63:12"
       ]
     }
   }
