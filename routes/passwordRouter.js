@@ -7,12 +7,16 @@ const bcrypt = require('bcryptjs');
 const { sendPasswordResetEmail } = require("../utils/email");
 
 router.post('/forgot-password', async(req, res) => {
+    let stage = "start";
+
     try {
+        stage = "read email";
+
         const { email } = req.body;
         if (!email) {
             return res.status(400).json({ error: 'Email is required' });
         }
-
+        stage = "find user";
         const user = await knex('users')
             .where({ email: email.toLowerCase().trim() })
             .first();
@@ -20,12 +24,12 @@ router.post('/forgot-password', async(req, res) => {
         if (!user) {
             return res.json({ message: 'If an account with this email exists, a password reset link has been sent.' });
         }
-
+        stage = "delete old tokens";
         // delete old reset tokens
         await knex('password_reset_tokens')
             .where({ user_id: user.user_id })
             .del();
-
+        stage = "generate token";
         // generate new token
         const token = crypto.randomBytes(32).toString('hex');
 
@@ -37,7 +41,7 @@ router.post('/forgot-password', async(req, res) => {
 
         // token expires in 30 min
         const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
-
+        stage = "insert token";
         await knex('password_reset_tokens').insert({
             user_id: user.user_id,
             token_hash: tokenHash,
@@ -46,13 +50,14 @@ router.post('/forgot-password', async(req, res) => {
         
         const resetUrl = `https://study-languages.up.railway.app/reset-password?token=${token}`;
         //const resetUrl = `https://example.com/reset-password?token=${token}`;
-        
+        stage = "send email";
         // send email and token via Resend
         await sendPasswordResetEmail(user.email, resetUrl);
 
         return res.json({ message:  'If an account with this email exists, a password reset link has been sent.' });
     
     } catch (error) {
+        console.error("Forgot password failed at stage:", stage);
         console.log("Forgot password error", error);
         return res.status(500).json({ error: "Something went wrong" })
     }
