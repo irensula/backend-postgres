@@ -55,7 +55,7 @@ exports.up = async function(knex) {
     t.string("name", 100).notNullable();
 
     t.unique(["category_id", "language_id"]);
-});
+  });
   // 6. USERS
   await knex.schema.createTable("users", (t) => {
     t.increments("user_id").primary();
@@ -70,6 +70,10 @@ exports.up = async function(knex) {
       .references("avatar_id")
       .inTable("avatars")
       .onDelete("SET NULL");
+
+    t.boolean("email_verified")
+      .notNullable()
+      .defaultTo(false);
 
     t.integer("ui_language_id")
       .notNullable()
@@ -304,7 +308,27 @@ exports.up = async function(knex) {
 
     t.unique(["user_id", "notification_id"]);
   });
-  // 17. RESET PASSWORD
+  // 17. EMAIL VERIFICATION
+  await knex.schema.createTable("email_verification_tokens", (t) => {
+    t.increments("email_verification_token_id").primary();
+
+    t.integer("user_id")
+      .notNullable()
+      .references("user_id")
+      .inTable("users")
+      .onDelete("CASCADE");
+
+    t.string('token_hash', 64).notNullable().unique();
+
+    t.timestamp("expires_at", { useTz: true }).notNullable();
+
+    t.timestamp("created_at", { useTz: true })
+        .notNullable()
+        .defaultTo(knex.fn.now());
+
+    t.index("user_id");
+  });
+  // 18. RESET PASSWORD
   await knex.schema.createTable("password_reset_tokens", (t) => {
     t.increments("password_reset_token_id").primary();
 
@@ -314,7 +338,7 @@ exports.up = async function(knex) {
       .inTable("users")
       .onDelete("CASCADE");
 
-    t.string('token_hash', 255).notNullable().unique();
+    t.string('token_hash', 64).notNullable().unique();
 
     t.timestamp('expires_at').notNullable();
     
@@ -329,6 +353,7 @@ exports.up = async function(knex) {
 exports.down = function(knex) {
   return knex.schema
     .dropTableIfExists("password_reset_tokens")
+    .dropTableIfExists("email_verification_tokens")
     .dropTableIfExists("notification_user_status")
     .dropTableIfExists("notification_log")
     .dropTableIfExists("user_push_tokens")

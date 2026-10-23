@@ -27,8 +27,17 @@ router.post("/", async (req, res, next) => {
       );
         
       if (!passwordCorrect) {
-        return res.status(401).json({ error: "Tarkista käyttäjätunnus tai salasana" });
+        return res.status(401).json({ error: "Check your email or password" });
       }
+
+      // check email verification before creating JWT
+      if (!tempUser.email_verified) {
+        return res.status(403).json({
+          error: "Please verify your email address before logging in",
+          code: "EMAIL_NOT_VERIFIED"
+        });
+      } 
+
       // create token payload
       const userForToken = {
         id: tempUser.user_id,

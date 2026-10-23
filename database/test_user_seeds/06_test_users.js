@@ -30,6 +30,7 @@ exports.seed = async function(knex) {
         password: hashedPassword,
         avatar_id: avatar.avatar_id,
         ui_language_id: language.language_id,
+        email_verified: true
       })
     .onConflict("email")
     .ignore();

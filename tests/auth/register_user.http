@@ -2,8 +2,8 @@ POST http://localhost:3001/register HTTP/1.1
 content-type: application/json
 
 {
-    "username": "Jane",
-    "email": "jane@gmail.com",
-    "password": "12345678",
+    "username": "Iren",
+    "email": "irensula19@gmail.com",
+    "password": "Qwerty12",
     "avatar_id": 2
 }   
